@@ -6,10 +6,11 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.io.Serializable;
 import java.util.List;
 
 @Stateless
-public class UsersEJB {
+public class UsersEJB implements Serializable {
 
         @PersistenceContext(unitName = "libraryPU")
         private EntityManager entityManager;

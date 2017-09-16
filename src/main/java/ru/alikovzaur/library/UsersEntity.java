@@ -2,12 +2,12 @@ package ru.alikovzaur.library;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users", schema = "library", catalog = "")
 public class UsersEntity {
+
     private String login;
     private String password;
 
