@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title><h:outputText value="Онлайн библиотека"/></title>
+    <h:outputStylesheet library="css" name="index_style.css"/>
+</h:head>
+<h:body>
+    <div class="main">
+        <div class="welcome_text">
+            <p><h:graphicImage styleClass="image" library="images" name="logo.png"/></p>
+            <p><h:outputText value="Добро пожаловать в онлайн библиотеку, где вы сможете найти любую книгу на ваш вкус.
+        Здесь доступны функции поиска, просмотра, сортировки и многие другие."/></p>
+        </div>
+        <div class="login_form">
+            <h:form style="margin: 0 auto;">
+                <h3><h:outputText value="Для входа введите свои данные:"/></h3>
+                <h:panelGrid style="margin: 0 auto" columns="2">
+                    <h:outputText value="Логин:"/>
+                    <h:inputText id="login" value="#{usersCDI.login}"/>
+
+                    <h:outputText value="Пароль:"/>
+                    <h:inputSecret id="password" value="#{usersCDI.password}"/>
+
+                </h:panelGrid>
+                <div class="button_jsf">
+                    <h:commandButton value="Вход" action="#{usersCDI.createUser}"/>
+                </div>
+            </h:form>
+        </div>
+    </div>
+</h:body>
+</html>

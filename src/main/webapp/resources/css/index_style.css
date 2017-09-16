@@ -1,0 +1,29 @@
+body{
+    margin: 100px;
+}
+h3,h5{
+    text-align: center;
+}
+.main{
+    background: white;
+    width: 600px;
+    height: 400px;
+    margin: 0 auto;
+    padding: 30px;
+    border: solid 1px;
+}
+.welcome_text{
+    text-align: center;
+}
+.login_form{
+    margin: 0 auto;
+}
+.button_jsf{
+    padding: 5px;
+    text-align: center;
+}
+.image{
+    width: 150px;
+    height: 150px;
+    text-align: center;
+}
