@@ -21,17 +21,17 @@
                 <h3><h:outputText value="Для входа введите свои данные:"/></h3>
                 <h:panelGrid style="margin: 0 auto;" columns="2">
                     <h:outputText value="Логин:"/>
-                    <h:inputText id="login" label="loginFld" value="#{usersCDI.login}" required="true" requiredMessage="Введите имя пользователя">
+                    <h:inputText id="login" label="loginFld" value="#{usersController.login}" required="true" requiredMessage="Введите имя пользователя">
                         <f:validator validatorId="indexFieldsValidator"/>
                     </h:inputText>
 
                     <h:outputText value="Пароль:"/>
-                    <h:inputSecret id="password" label="passwordFld" value="#{usersCDI.password}" redisplay="true" required="true" requiredMessage="Введите пароль">
+                    <h:inputSecret id="password" label="passwordFld" value="#{usersController.password}" redisplay="true" required="true" requiredMessage="Введите пароль">
                         <f:validator validatorId="indexFieldsValidator"/>
                     </h:inputSecret>
                 </h:panelGrid>
                 <div class="button_jsf">
-                    <h:commandButton value="Вход" action="#{usersCDI.checkPassword}"/>
+                    <h:commandButton value="Вход" action="#{usersController.createUser}"/>
                     <h:messages styleClass="error"></h:messages>
                 </div>
             </h:form>
