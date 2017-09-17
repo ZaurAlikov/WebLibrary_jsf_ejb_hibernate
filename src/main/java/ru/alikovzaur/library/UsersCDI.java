@@ -1,7 +1,7 @@
 package ru.alikovzaur.library;
 
-import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 
@@ -13,8 +13,10 @@ public class UsersCDI implements Serializable {
     private boolean loginSuccess;
     private boolean createSuccess;
 
-    @EJB
-    private UsersEJB usersEJB;
+    @Inject
+    private UsersController usersController;
+//    @Inject
+//    private UsersCDI usersCDI;
 
     public String getLogin() {
         return login;
@@ -32,12 +34,18 @@ public class UsersCDI implements Serializable {
         this.password = password;
     }
 
-    public void checkPassword(){
-        loginSuccess = usersEJB.checkPassword(login, password);
+    public String checkPassword(){
+        loginSuccess = usersController.checkPassword(login, password);
+        if (loginSuccess){
+            return "books";
+        }
+        this.setLogin("");
+        this.setPassword("");
+        return "index";
     }
 
     public void createUser(){
-        createSuccess = usersEJB.createUser(login, password);
+        createSuccess = usersController.createUser(login, password);
     }
 
 }
