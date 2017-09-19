@@ -6,7 +6,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
-    <title><h:outputText value="Онлайн библиотека"/></title>
+    <title>Онлайн библиотека</title>
     <h:outputStylesheet library="css" name="index_style.css"/>
 </h:head>
 <h:body>
@@ -31,8 +31,9 @@
                     </h:inputSecret>
                 </h:panelGrid>
                 <div class="button_jsf">
-                    <h:commandButton value="Вход" action="#{usersController.createUser}"/>
-                    <h:messages styleClass="error"></h:messages>
+                    <h:commandButton value="Вход" action="#{usersController.checkPassword}"/>
+                    <br/><h:commandLink value="Регистрация" action="registration" immediate="true"/>
+                    <h:messages styleClass="error"/>
                 </div>
             </h:form>
         </div>

@@ -1,52 +1,39 @@
 body{
     background: #e8e8e8;
-    margin: 100px;
+    margin: 20px;
 }
 h3,h5{
     text-align: center;
 }
-a:link {
-    text-decoration: none;
-    color: #68798b;
-    font-size: 13px;
-}
-a:visited { text-decoration: none;
-    color: #68798b;
-}
-a:active { text-decoration: none; }
-a:hover {
-    text-decoration: none;
-    color: #000000;
-}
 .main{
     background: white;
-    width: 600px;
-    height: 400px;
+    width: 900px;
+    height: 800px;
     margin: 0 auto;
     padding: 30px;
     -webkit-box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     -moz-box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
-.welcome_text{
+.reg_title{
     text-align: center;
+    font-style: italic;
 }
-.login_form{
+.form{
     margin: 0 auto;
+}
+.table{
+
+    margin-left: 290px;
 }
 .button_jsf{
     padding: 5px;
     text-align: center;
 }
-.image{
-    width: 150px;
-    height: 150px;
-    text-align: center;
-}
 .error{
     font-style: italic;
     color: red;
-    font-size: 13px;
+    font-size: 12px;
     list-style-type: none;
     padding: 0px;
     margin: 4px;

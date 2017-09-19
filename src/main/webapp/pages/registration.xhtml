@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Регистрация</title>
+    <h:outputStylesheet library="css" name="reg_style.css"/>
+</h:head>
+<h:body>
+    <div class="main">
+        <p class="reg_title"><h:outputText  value="РЕГИСТРАЦИЯ"/></p>
+        <div class="reg_form">
+            <h:form styleClass="form">
+
+                <h:panelGrid styleClass="table" columns="3">
+                    <h:outputText value="Имя:"/>
+                    <h:inputText id="name" value="#{usersController.name}" required="true" requiredMessage="Поле должно быть заполнено">
+                    </h:inputText>
+                    <h:message styleClass="error" for="name"/>
+
+                    <h:outputText value="Фамилия:"/>
+                    <h:inputText id="surname" value="#{usersController.surname}" required="true" requiredMessage="Поле должно быть заполнено">
+                    </h:inputText>
+                    <h:message styleClass="error" for="surname"/>
+
+                    <h:outputText value="Логин:"/>
+                    <h:inputText id="login" value="#{usersController.login}" required="true" requiredMessage="Поле должно быть заполнено">
+                        <f:validator validatorId="indexFieldsValidator"/>
+                    </h:inputText>
+                    <h:message styleClass="error" for="login"/>
+
+                    <h:outputText value="Пароль:"/>
+                    <h:inputSecret id="password" value="#{usersController.password}" redisplay="true" required="true" requiredMessage="Поле должно быть заполнено">
+                        <f:validator validatorId="indexFieldsValidator"/>
+                    </h:inputSecret>
+                    <h:message styleClass="error" for="password"/>
+
+                    <h:outputText value="Email:"/>
+                    <h:inputText id="email" value="#{usersController.email}" required="true" requiredMessage="Поле должно быть заполнено">
+                    </h:inputText>
+                    <h:message styleClass="error" for="email"/>
+                </h:panelGrid>
+                <div class="button_jsf">
+                    <h:commandButton value="Вход" action="#{usersController.createUser}"/>
+                </div>
+            </h:form>
+        </div>
+    </div>
+</h:body>
+</html>
