@@ -1,6 +1,6 @@
 package ru.alikovzaur.library.controllers;
 
-//import ru.alikovzaur.library.entityes.SexTabEntity;
+import ru.alikovzaur.library.entityes.SexTabEntity;
 import ru.alikovzaur.library.entityes.UsersEntity;
 
 import javax.annotation.Resource;
@@ -21,7 +21,7 @@ public class UsersController implements Serializable {
     private String surname;
     private Date birthday;
     private String email;
-//    private SexTabEntity sex;
+    private String sex;
     private String login;
     private String password;
 
@@ -62,13 +62,13 @@ public class UsersController implements Serializable {
         this.email = email;
     }
 
-    //    public SexTabEntity getSex() {
-//        return sex;
-//    }
-//
-//    public void setSex(SexTabEntity sex) {
-//        this.sex = sex;
-//    }
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
     public String getLogin() {
         return login;
@@ -121,6 +121,13 @@ public class UsersController implements Serializable {
         usersEntity.setEmail(email);
         usersEntity.setLogin(login);
         usersEntity.setPassword(password);
+        if(sex.equals("Мужской")){
+            SexTabEntity sexTabEntity = entityManager.find(SexTabEntity.class, 1);
+            usersEntity.setSex(sexTabEntity);
+        } else if(sex.equals("Женский")){
+            SexTabEntity sexTabEntity = entityManager.find(SexTabEntity.class, 2);
+            usersEntity.setSex(sexTabEntity);
+        }
         userTransaction.begin();
         entityManager.persist(usersEntity);
         userTransaction.commit();

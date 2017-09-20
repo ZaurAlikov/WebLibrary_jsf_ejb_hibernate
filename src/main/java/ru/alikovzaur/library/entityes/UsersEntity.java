@@ -12,7 +12,7 @@ public class UsersEntity {
     private String surname;
     private Date birthday;
     private String email;
-//    private SexTabEntity sex;
+    private SexTabEntity sex;
     private String login;
     private String password;
 
@@ -52,15 +52,15 @@ public class UsersEntity {
         this.email = email;
     }
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id")
-//    public SexTabEntity getSex() {
-//        return this.sex;
-//    }
-//
-//    public void setSex(SexTabEntity sex) {
-//        this.sex = sex;
-//    }
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "sex_id", nullable = false)
+    public SexTabEntity getSex() {
+        return this.sex;
+    }
+
+    public void setSex(SexTabEntity sex) {
+        this.sex = sex;
+    }
 
     @Id
     public String getLogin() {

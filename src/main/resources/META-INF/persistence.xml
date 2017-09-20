@@ -6,7 +6,7 @@
     <persistence-unit name="libraryPU">
         <jta-data-source>java:/mysqlDS</jta-data-source>
         <class>ru.alikovzaur.library.entityes.UsersEntity</class>
-        <!--<class>ru.alikovzaur.library.entityes.SexTabEntity</class>-->
+        <class>ru.alikovzaur.library.entityes.SexTabEntity</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
@@ -20,8 +20,6 @@
             <!--<property name="eclipselink.jdbc.driver" value="com.mysql.jdbc.Driver"/>-->
             <!--<property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/library"/>-->
             <!--<property name="toplink.jdbc.driver" value="com.mysql.jdbc.Driver"/>-->
-            <!--<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/library"/>-->
-            <!--<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>-->
         </properties>
     </persistence-unit>
 </persistence>
