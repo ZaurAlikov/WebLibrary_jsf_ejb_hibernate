@@ -1,5 +1,6 @@
 package ru.alikovzaur.library.controllers;
 
+import ru.alikovzaur.library.DateClass;
 import ru.alikovzaur.library.entityes.SexTabEntity;
 import ru.alikovzaur.library.entityes.UsersEntity;
 
@@ -7,6 +8,7 @@ import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,6 +31,9 @@ public class UsersController implements Serializable {
     private EntityManager entityManager;
     @Resource
     private UserTransaction userTransaction;
+    @Inject
+    private DateClass dateClass;
+
 
     public String getName() {
         return name;
@@ -117,7 +122,7 @@ public class UsersController implements Serializable {
         usersEntity = new UsersEntity();
         usersEntity.setName(name);
         usersEntity.setSurname(surname);
-//        usersEntity.setBirthday(birthday);
+        usersEntity.setBirthday(dateClass.getCurrentDate());
         usersEntity.setEmail(email);
         usersEntity.setLogin(login);
         usersEntity.setPassword(password);

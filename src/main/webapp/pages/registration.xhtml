@@ -43,26 +43,27 @@
                     </h:inputText>
                     <h:message styleClass="error" for="email"/>
 
+                    <h:outputText value="Дата рождения:"/>
+                    <h:panelGroup>
+                        <h:selectOneMenu id="day" style="margin-right: 3px" value="#{dateClass.day}">
+                            <f:selectItems id="days" value="#{dateClass.dayList}"/>
+                        </h:selectOneMenu>
+                        <h:selectOneMenu id="month" style="margin-right: 3px" value="#{dateClass.month}">
+                            <f:ajax execute="month day" render="day"/>
+                            <f:selectItems value="#{dateClass.monthList}"/>
+                        </h:selectOneMenu>
+                        <h:selectOneMenu id="year" value="#{dateClass.year}">
+                            <f:selectItems value="#{dateClass.yearList}"/>
+                        </h:selectOneMenu>
+                    </h:panelGroup>
+                    <h:panelGroup></h:panelGroup>
+
                     <h:outputText value="Пол:"/>
                     <h:selectOneMenu id="sex" value="#{usersController.sex}">
                         <f:selectItem itemValue="Мужской"/>
                         <f:selectItem itemValue="Женский"/>
                     </h:selectOneMenu>
                     <h:message styleClass="error" for="sex"/>
-
-                    <h:outputText value="Дата рождения:"/>
-                    <h:panelGroup>
-                        <h:selectOneMenu style="margin-right: 3px">
-                            <f:selectItems value="#{dateClass.dayList}"/>
-                        </h:selectOneMenu>
-                        <h:selectOneMenu style="margin-right: 3px">
-                            <f:selectItems value="#{dateClass.monthList}"/>
-                        </h:selectOneMenu>
-                        <h:selectOneMenu value="1980">
-                            <f:selectItems value="#{dateClass.yearList}"/>
-                        </h:selectOneMenu>
-                    </h:panelGroup>
-                    <h:panelGroup></h:panelGroup>
                 </h:panelGrid>
                 <div class="button_jsf">
                     <h:commandButton value="Вход" action="#{usersController.createUser}"/>
