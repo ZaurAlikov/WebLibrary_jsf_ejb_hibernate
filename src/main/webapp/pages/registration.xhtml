@@ -6,44 +6,43 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
-    <title>Регистрация</title>
+    <title>#{mess.registration_title}</title>
     <h:outputStylesheet library="css" name="reg_style.css"/>
 </h:head>
 <h:body>
     <div class="main">
-        <p class="reg_title"><h:outputText  value="РЕГИСТРАЦИЯ"/></p>
+        <p class="reg_title"><h:outputText  value="#{mess.registration_upcase}"/></p>
         <div class="reg_form">
             <h:form styleClass="form">
-
                 <h:panelGrid styleClass="table" columns="3">
-                    <h:outputText value="Имя:"/>
+                    <h:outputText value="#{mess.name}"/>
                     <h:inputText id="name" value="#{usersController.name}" required="true" requiredMessage="Поле должно быть заполнено">
                     </h:inputText>
                     <h:message styleClass="error" for="name"/>
 
-                    <h:outputText value="Фамилия:"/>
+                    <h:outputText value="#{mess.surname}"/>
                     <h:inputText id="surname" value="#{usersController.surname}" required="true" requiredMessage="Поле должно быть заполнено">
                     </h:inputText>
                     <h:message styleClass="error" for="surname"/>
 
-                    <h:outputText value="Логин:"/>
+                    <h:outputText value="#{mess.login}"/>
                     <h:inputText id="login" value="#{usersController.login}" required="true" requiredMessage="Поле должно быть заполнено">
                         <f:validator validatorId="indexFieldsValidator"/>
                     </h:inputText>
                     <h:message styleClass="error" for="login"/>
 
-                    <h:outputText value="Пароль:"/>
+                    <h:outputText value="#{mess.password}"/>
                     <h:inputSecret id="password" value="#{usersController.password}" redisplay="true" required="true" requiredMessage="Поле должно быть заполнено">
                         <f:validator validatorId="indexFieldsValidator"/>
                     </h:inputSecret>
                     <h:message styleClass="error" for="password"/>
 
-                    <h:outputText value="Email:"/>
+                    <h:outputText value="#{mess.email}"/>
                     <h:inputText id="email" value="#{usersController.email}" required="true" requiredMessage="Поле должно быть заполнено">
                     </h:inputText>
                     <h:message styleClass="error" for="email"/>
 
-                    <h:outputText value="Дата рождения:"/>
+                    <h:outputText value="#{mess.birthday}"/>
                     <h:panelGroup>
                         <h:selectOneMenu id="day" style="margin-right: 3px" value="#{dateClass.day}">
                             <f:selectItems id="days" value="#{dateClass.dayList}"/>
@@ -58,15 +57,15 @@
                     </h:panelGroup>
                     <h:panelGroup></h:panelGroup>
 
-                    <h:outputText value="Пол:"/>
+                    <h:outputText value="#{mess.sex}"/>
                     <h:selectOneMenu id="sex" value="#{usersController.sex}">
-                        <f:selectItem itemValue="Мужской"/>
-                        <f:selectItem itemValue="Женский"/>
+                        <f:selectItem itemValue="#{mess.sex_menu1}"/>
+                        <f:selectItem itemValue="#{mess.sex_menu2}"/>
                     </h:selectOneMenu>
                     <h:message styleClass="error" for="sex"/>
                 </h:panelGrid>
                 <div class="button_jsf">
-                    <h:commandButton value="Вход" action="#{usersController.createUser}"/>
+                    <h:commandButton value="#{mess.registration_link}" action="#{usersController.createUser}"/>
                 </div>
             </h:form>
         </div>

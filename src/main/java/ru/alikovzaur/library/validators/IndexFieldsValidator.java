@@ -6,6 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
+import java.util.ResourceBundle;
 
 
 @FacesValidator("indexFieldsValidator")
@@ -13,17 +14,18 @@ public class IndexFieldsValidator implements Validator {
 
     public void validate(FacesContext facesContext, UIComponent uiComponent, Object o) throws ValidatorException {
         String id = uiComponent.getId();
+        ResourceBundle res = ResourceBundle.getBundle("nls/message");
 
         if (id.equals("login")) {
             if (o.toString().length() < 3) {
-                FacesMessage facesMessage = new FacesMessage("Логин должен быть не короче 3 символов");
+                FacesMessage facesMessage = new FacesMessage(res.getString("error_login_min_words"));
                 facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
                 throw new ValidatorException(facesMessage);
             }
         }
         if (id.equals("password")) {
             if (o.toString().length() < 5) {
-                FacesMessage facesMessage = new FacesMessage("Пароль должен быть не короче 5 символов");
+                FacesMessage facesMessage = new FacesMessage(res.getString("error_pass_min_words"));
                 facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
                 throw new ValidatorException(facesMessage);
             }

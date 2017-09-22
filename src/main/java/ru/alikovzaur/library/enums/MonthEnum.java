@@ -1,5 +1,5 @@
-package ru.alikovzaur.library;
+package ru.alikovzaur.library.enums;
 
-public enum MothEnum {
+public enum MonthEnum {
     Январь, Февраль, Март, Апрель, Май, Июнь, Июль, Август, Сентябрь, Октябрь, Ноябрь, Декабрь
 }

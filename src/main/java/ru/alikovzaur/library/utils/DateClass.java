@@ -1,4 +1,6 @@
-package ru.alikovzaur.library;
+package ru.alikovzaur.library.utils;
+
+import ru.alikovzaur.library.enums.MonthEnum;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -13,7 +15,7 @@ import java.util.Calendar;
 @SessionScoped
 public class DateClass implements Serializable {
     private String day = "01";
-    private String month = String.valueOf(MothEnum.Январь);
+    private String month = String.valueOf(MonthEnum.Январь);
     private String year = "1980";
     private LinkedHashMap<String, Integer> dayList;
     private LinkedHashMap<String, String> monthList;
@@ -75,18 +77,18 @@ public class DateClass implements Serializable {
     public LinkedHashMap<String, String> getMonthList() {
         if(monthList == null){
             monthList = new LinkedHashMap<String, String>();
-            monthList.put("Январь", String.valueOf(MothEnum.Январь));
-            monthList.put("Февраль", String.valueOf(MothEnum.Февраль));
-            monthList.put("Март", String.valueOf(MothEnum.Март));
-            monthList.put("Апрель", String.valueOf(MothEnum.Апрель));
-            monthList.put("Май", String.valueOf(MothEnum.Май));
-            monthList.put("Июнь", String.valueOf(MothEnum.Июнь));
-            monthList.put("Июль", String.valueOf(MothEnum.Июль));
-            monthList.put("Август", String.valueOf(MothEnum.Август));
-            monthList.put("Сентябрь", String.valueOf(MothEnum.Сентябрь));
-            monthList.put("Октябрь", String.valueOf(MothEnum.Октябрь));
-            monthList.put("Ноябрь", String.valueOf(MothEnum.Ноябрь));
-            monthList.put("Декабрь", String.valueOf(MothEnum.Декабрь));
+            monthList.put("Январь", String.valueOf(MonthEnum.Январь));
+            monthList.put("Февраль", String.valueOf(MonthEnum.Февраль));
+            monthList.put("Март", String.valueOf(MonthEnum.Март));
+            monthList.put("Апрель", String.valueOf(MonthEnum.Апрель));
+            monthList.put("Май", String.valueOf(MonthEnum.Май));
+            monthList.put("Июнь", String.valueOf(MonthEnum.Июнь));
+            monthList.put("Июль", String.valueOf(MonthEnum.Июль));
+            monthList.put("Август", String.valueOf(MonthEnum.Август));
+            monthList.put("Сентябрь", String.valueOf(MonthEnum.Сентябрь));
+            monthList.put("Октябрь", String.valueOf(MonthEnum.Октябрь));
+            monthList.put("Ноябрь", String.valueOf(MonthEnum.Ноябрь));
+            monthList.put("Декабрь", String.valueOf(MonthEnum.Декабрь));
         }
         return monthList;
     }
@@ -113,8 +115,8 @@ public class DateClass implements Serializable {
 
     public Date getCurrentDate(){
         int numMonth = 0;
-        MothEnum mothEnum[] = MothEnum.values();
-        for (MothEnum me : mothEnum){
+        MonthEnum mothEnum[] = MonthEnum.values();
+        for (MonthEnum me : mothEnum){
             if(month.equals(me.toString())){
                 numMonth = me.ordinal()+1;
             }
