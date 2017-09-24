@@ -14,21 +14,23 @@ public class IndexFieldsValidator implements Validator {
 
     public void validate(FacesContext facesContext, UIComponent uiComponent, Object o) throws ValidatorException {
         String id = uiComponent.getId();
-        ResourceBundle res = ResourceBundle.getBundle("nls/message");
+        ResourceBundle res = ResourceBundle.getBundle("nls/message", facesContext.getViewRoot().getLocale() );
 
-        if (id.equals("login")) {
-            if (o.toString().length() < 3) {
-                FacesMessage facesMessage = new FacesMessage(res.getString("error_login_min_words"));
-                facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
-                throw new ValidatorException(facesMessage);
+        try{
+            if (id.equals("login")) {
+                if (o.toString().length() < 3) {
+                    throw new IllegalArgumentException(res.getString("error_login_min_words"));
+                }
             }
-        }
-        if (id.equals("password")) {
-            if (o.toString().length() < 5) {
-                FacesMessage facesMessage = new FacesMessage(res.getString("error_pass_min_words"));
-                facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
-                throw new ValidatorException(facesMessage);
+            if (id.equals("password")) {
+                if (o.toString().length() < 5) {
+                    throw new IllegalArgumentException(res.getString("error_pass_min_words"));
+                }
             }
+        } catch (IllegalArgumentException e){
+            FacesMessage facesMessage = new FacesMessage(e.getMessage());
+            facesMessage.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(facesMessage);
         }
     }
 }

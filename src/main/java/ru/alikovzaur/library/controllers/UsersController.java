@@ -1,6 +1,5 @@
 package ru.alikovzaur.library.controllers;
 
-import ru.alikovzaur.library.utils.DateClass;
 import ru.alikovzaur.library.entityes.SexTabEntity;
 import ru.alikovzaur.library.entityes.UsersEntity;
 
@@ -16,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.UserTransaction;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ResourceBundle;
 
 @Named
 @SessionScoped
@@ -33,8 +33,9 @@ public class UsersController implements Serializable {
     @Resource
     private UserTransaction userTransaction;
     @Inject
-    private DateClass dateClass;
+    private DateController dateController;
 
+    ResourceBundle res = ResourceBundle.getBundle("nls/message", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
     public String getName() {
         return name;
@@ -98,14 +99,15 @@ public class UsersController implements Serializable {
         if (usersEntity == null){
             this.setLogin("");
             this.setPassword("");
-            FacesMessage message = new FacesMessage("Пользователя с таким именем не существует");
+            FacesMessage message = new FacesMessage(res.getString("error_incorrect_login"));
             FacesContext.getCurrentInstance().addMessage(null, message);
             return "index";
         } else if(password.equals(usersEntity.getPassword())){
             return "books";
         }
         this.setPassword("");
-        FacesMessage message = new FacesMessage("Неверный пароль");
+
+        FacesMessage message = new FacesMessage(res.getString("error_incorrect_password"));
         FacesContext.getCurrentInstance().addMessage(null, message);
         return "index";
     }
@@ -115,7 +117,7 @@ public class UsersController implements Serializable {
         if(usersEntity != null){
             this.setLogin("");
             this.setPassword("");
-            FacesMessage message = new FacesMessage("Пользователь с таким именем уже существует");
+            FacesMessage message = new FacesMessage(res.getString("error_login_exists"));
             FacesContext.getCurrentInstance().addMessage(null, message);
             return "index";
         }
@@ -123,14 +125,14 @@ public class UsersController implements Serializable {
         usersEntity = new UsersEntity();
         usersEntity.setName(name);
         usersEntity.setSurname(surname);
-        usersEntity.setBirthday(dateClass.getCurrentDate());
+        usersEntity.setBirthday(dateController.getCurrentDate());
         usersEntity.setEmail(email);
         usersEntity.setLogin(login);
         usersEntity.setPassword(password);
-        if(sex.equals("Мужской")){
+        if(sex.equals(res.getString("sex_menu1"))){
             SexTabEntity sexTabEntity = entityManager.find(SexTabEntity.class, 1);
             usersEntity.setSex(sexTabEntity);
-        } else if(sex.equals("Женский")){
+        } else if(sex.equals(res.getString("sex_menu2"))){
             SexTabEntity sexTabEntity = entityManager.find(SexTabEntity.class, 2);
             usersEntity.setSex(sexTabEntity);
         }
@@ -144,5 +146,4 @@ public class UsersController implements Serializable {
         setLogin("");
         setPassword("");
     }
-
 }
