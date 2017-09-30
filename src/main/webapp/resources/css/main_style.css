@@ -7,19 +7,32 @@ body{
     /*font-size: 13px;*/
     height: 100%;
 }
-ul.nav a:hover, ul.nav a:active, ul.nav a:focus {
+/*ul.nav a:hover, ul.nav a:active, ul.nav a:focus {*/
+    /*background-color: #FFFFFF;*/
+    /*color: #999;*/
+    /*-webkit-padding-start: 5px;*/
+/*}*/
+/*ul.nav{*/
+    /*line-height: 25px;*/
+    /*-webkit-padding-start: 0px;*/
+    /**/
+/*}*/
+
+.genres a:hover, a:active, a:focus{
     background-color: #FFFFFF;
     color: #999;
     -webkit-padding-start: 5px;
 }
-
-ul.nav{
+.genres a:visited{
     line-height: 25px;
     -webkit-padding-start: 0px;
 }
-
+.genres td{
+    font-size: 12px;
+    padding-bottom: 10px;
+}
 a:link {
-    color:#414958;
+    color: #34394a;
     text-decoration: none;
 }
 a:visited {
@@ -98,11 +111,19 @@ li{
     height: 25px;
 }
 .left_menu{
-    width: 20%;
+    width: 17%;
     float: left;
 }
+.genre_list{
+    margin-top: 12px;
+    margin-bottom: 25px;
+}
+.all_book{
+    font-size: 12px;
+    padding-bottom: 10px;
+}
 .content{
-    width: 80%;
+    width: 83%;
     float: left;
     text-align: center;
 }
@@ -110,8 +131,36 @@ li{
     width: 100%;
     text-align: center;
 }
-
-
+.count_book{
+    text-align: left;
+    font-size: 13px;
+    padding-left: 10px;
+}
+.col_2{
+    width: 25%;
+}
+.col_2 a:visited{
+    color: blue;
+}
+.col_2 a:hover, a:active, a:focus{
+    color: navy;
+}
+.col_2 p{
+    font-size: 11px;
+    text-align: left;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.col_3 p{
+    font-size: 11px;
+    text-align: left;
+}
+p.book_name{
+    text-align: left;
+    font-size: 12px;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
 /*.book_list{*/
     /*!*text-align: left;*!*/
     /*position: relative;*/

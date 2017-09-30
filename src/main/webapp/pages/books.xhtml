@@ -10,7 +10,31 @@
 </h:head>
 <h:body>
     <ui:composition template="/templates/library_template.xhtml">
+        <ui:define name="content">
+            <p class="count_book"><strong>#{mess.find_books} #{searchController.books.size()}</strong></p>
 
+            <h:dataTable value="#{searchController.books}" var="b" cellspacing="10px" styleClass="main_table" columnClasses="col_1,col_2,col_3">
+                <h:column>
+                    <h:graphicImage value="/ShowImage?id=#{b.id}" width="120" height="160"/>
+                </h:column>
+                <h:column>
+                    <div>
+                        <p class="book_name"><strong><a href="#">#{b.name}</a></strong></p>
+                        <p><strong>#{mess.author} </strong>#{b.author.fio}</p>
+                        <p><strong>#{mess.str_count} </strong>#{b.pageCount} #{mess.str}</p>
+                        <p><strong>#{mess.publisher} </strong>#{b.publisher.name}</p>
+                        <p><strong>#{mess.year_pub} </strong>#{b.publishYear} г.</p>
+                        <p><strong>#{mess.ISBN} </strong>#{b.isbn}</p>
+                    </div>
+                </h:column>
+                <h:column>
+                    <div class="book_details">
+                        <p><strong>#{mess.description}</strong></p>
+                        <p>#{b.descr}</p>
+                    </div>
+                </h:column>
+            </h:dataTable>
+        </ui:define>
     </ui:composition>
 </h:body>
 </html>

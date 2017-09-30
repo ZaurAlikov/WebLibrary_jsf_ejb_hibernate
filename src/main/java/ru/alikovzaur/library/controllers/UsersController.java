@@ -35,7 +35,7 @@ public class UsersController implements Serializable {
     @Inject
     private DateController dateController;
 
-    ResourceBundle res = ResourceBundle.getBundle("nls/message", FacesContext.getCurrentInstance().getViewRoot().getLocale());
+    private ResourceBundle res = ResourceBundle.getBundle("nls/message", FacesContext.getCurrentInstance().getViewRoot().getLocale());
 
     public String getName() {
         return name;
@@ -103,6 +103,11 @@ public class UsersController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, message);
             return "index";
         } else if(password.equals(usersEntity.getPassword())){
+            name = usersEntity.getName();
+            surname = usersEntity.getSurname();
+            birthday = usersEntity.getBirthday();
+            email = usersEntity.getEmail();
+            sex = usersEntity.getSex().getSex();
             return "books";
         }
         this.setPassword("");

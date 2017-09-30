@@ -1,7 +1,8 @@
 package ru.alikovzaur.library.controllers;
 
 import ru.alikovzaur.library.entityes.GenreEntity;
-import javax.enterprise.context.SessionScoped;
+
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,15 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Named
-@SessionScoped
+@ApplicationScoped
 public class GenresController implements Serializable {
 
     private int id;
     private String name;
-    private static List genresList = new ArrayList<GenreEntity>();
+    private List genresList = new ArrayList<GenreEntity>();
 
     @PersistenceContext(unitName = "libraryPU")
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public int getId() {
         return id;
@@ -35,12 +36,14 @@ public class GenresController implements Serializable {
         this.name = genre;
     }
 
+    @SuppressWarnings("unchecked")
     private List<GenreEntity> getGenres(){
-        Query query = entityManager.createQuery("select genres from GenreEntity genres");
+        Query query = entityManager.createQuery("select genres from GenreEntity genres order by name");
         genresList = query.getResultList();
         return genresList;
     }
 
+    @SuppressWarnings("unchecked")
     public List<GenreEntity> getGenresList() throws Exception {
         if (!genresList.isEmpty()) {
             return genresList;

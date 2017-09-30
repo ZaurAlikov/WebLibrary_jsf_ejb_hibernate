@@ -8,6 +8,9 @@
         <class>ru.alikovzaur.library.entityes.UsersEntity</class>
         <class>ru.alikovzaur.library.entityes.SexTabEntity</class>
         <class>ru.alikovzaur.library.entityes.GenreEntity</class>
+        <class>ru.alikovzaur.library.entityes.BookEntity</class>
+        <class>ru.alikovzaur.library.entityes.AuthorEntity</class>
+        <class>ru.alikovzaur.library.entityes.PublisherEntity</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
@@ -15,6 +18,7 @@
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/library"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+
             <!--<property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/library"/>-->
             <!--<property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>-->
             <!--<property name="eclipselink.jdbc.url" value="jdbc:mysql://localhost:3306/library"/>-->

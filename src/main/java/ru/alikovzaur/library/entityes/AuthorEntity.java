@@ -1,20 +1,22 @@
 package ru.alikovzaur.library.entityes;
 
-import javax.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.*;
+import java.sql.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "genre", schema = "library")
-public class GenreEntity {
+@Table(name = "author", schema = "library")
+public class AuthorEntity {
     private long id;
-    private String name;
+    private String fio;
+    private Date birthday;
     private Set<BookEntity> bookEntities;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public long getId() {
         return id;
     }
@@ -24,13 +26,23 @@ public class GenreEntity {
     }
 
     @Basic
-    @Column(name = "name")
-    public String getName() {
-        return name;
+    @Column(name = "fio", nullable = false, length = 300)
+    public String getFio() {
+        return fio;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFio(String fio) {
+        this.fio = fio;
+    }
+
+    @Basic
+    @Column(name = "birthday", nullable = false)
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     @Override
@@ -43,7 +55,7 @@ public class GenreEntity {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "genre")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     public Set<BookEntity> getBookEntities() {
         return bookEntities;
     }
@@ -51,4 +63,6 @@ public class GenreEntity {
     public void setBookEntities(Set<BookEntity> bookEntities) {
         this.bookEntities = bookEntities;
     }
+
 }
+

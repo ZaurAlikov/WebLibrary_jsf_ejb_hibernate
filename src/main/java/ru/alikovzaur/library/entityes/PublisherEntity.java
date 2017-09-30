@@ -1,20 +1,20 @@
 package ru.alikovzaur.library.entityes;
 
-import javax.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "genre", schema = "library")
-public class GenreEntity {
+@Table(name = "publisher", schema = "library")
+public class PublisherEntity {
     private long id;
     private String name;
     private Set<BookEntity> bookEntities;
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     public long getId() {
         return id;
     }
@@ -24,7 +24,7 @@ public class GenreEntity {
     }
 
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 100)
     public String getName() {
         return name;
     }
@@ -43,7 +43,7 @@ public class GenreEntity {
         return HashCodeBuilder.reflectionHashCode(this);
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "genre")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "publisher")
     public Set<BookEntity> getBookEntities() {
         return bookEntities;
     }
