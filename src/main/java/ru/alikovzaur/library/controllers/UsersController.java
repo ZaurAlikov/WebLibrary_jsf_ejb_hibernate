@@ -147,6 +147,11 @@ public class UsersController implements Serializable {
         return "books";
     }
 
+    public String exit(){
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "exit";
+    }
+
     public void regListener(ActionEvent event){
         setLogin("");
         setPassword("");

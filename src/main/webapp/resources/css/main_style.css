@@ -27,9 +27,17 @@ body{
     line-height: 25px;
     -webkit-padding-start: 0px;
 }
-.genres td{
-    font-size: 12px;
+.genres a{
+    font-size: 13px;
     padding-bottom: 10px;
+}
+.genres p{
+    margin-top: 9px;
+    margin-bottom: 5px;
+}
+.sel_genre a:link{
+    color: #0000ff;
+    -webkit-padding-start: 5px;
 }
 a:link {
     color: #34394a;
@@ -160,6 +168,11 @@ p.book_name{
     font-size: 12px;
     margin-bottom: 10px;
     margin-top: 5px;
+}
+.footer{
+    font-size: 10px;
+    text-align: right;
+    font-style: italic;
 }
 /*.book_list{*/
     /*!*text-align: left;*!*/
