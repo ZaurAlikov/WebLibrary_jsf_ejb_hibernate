@@ -5,9 +5,12 @@ import ru.alikovzaur.library.entityes.UsersEntity;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ComponentSystemEvent;
+import javax.faces.event.SystemEventListener;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -27,6 +30,7 @@ public class UsersController implements Serializable {
     private String sex;
     private String login;
     private String password;
+    private boolean loggedIn = false;
 
     @PersistenceContext(unitName = "libraryPU")
     private EntityManager entityManager;
@@ -93,6 +97,14 @@ public class UsersController implements Serializable {
         this.password = password;
     }
 
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+
     public String checkPassword(){
         UsersEntity usersEntity = entityManager.find(UsersEntity.class, login);
 
@@ -108,6 +120,7 @@ public class UsersController implements Serializable {
             birthday = usersEntity.getBirthday();
             email = usersEntity.getEmail();
             sex = usersEntity.getSex().getSex();
+            loggedIn = true;
             return "books";
         }
         this.setPassword("");
@@ -144,6 +157,7 @@ public class UsersController implements Serializable {
         userTransaction.begin();
         entityManager.persist(usersEntity);
         userTransaction.commit();
+        loggedIn = true;
         return "books";
     }
 
@@ -156,4 +170,13 @@ public class UsersController implements Serializable {
         setLogin("");
         setPassword("");
     }
+
+    public void checkLogin(ComponentSystemEvent event){
+        if (!loggedIn){
+            FacesContext context = FacesContext.getCurrentInstance();
+            ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
+            handler.performNavigation("/faces/index.xhtml?faces-redirect=true");
+        }
+    }
+
 }

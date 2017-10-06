@@ -26,7 +26,9 @@
         <div class="search_div">
             <h:form styleClass="search_form">
                 <h:inputText id="input_text" value="#{searchController.searchField}" styleClass="search_string"/>
-                <h:commandButton value="#{mess.search}" action="#{searchController.fillBooksBySearch}" styleClass="btn"/>
+                <h:commandButton value="#{mess.search}" action="#{searchController.fillBooks}" styleClass="btn">
+                    <f:param name="type_search" value="search"/>
+                </h:commandButton>
                 <h:selectOneMenu value="#{searchController.searchType}" styleClass="sel_menu">
                     <f:selectItems value="#{searchController.searchTypeList}"/>
                 </h:selectOneMenu>

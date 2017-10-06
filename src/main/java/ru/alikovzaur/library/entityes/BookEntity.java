@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class BookEntity {
     private long id;
     private String name;
-//    private byte[] content;
+    private byte[] content;
     private int pageCount;
     private String isbn;
     private int publishYear;
@@ -40,15 +40,15 @@ public class BookEntity {
         this.name = name;
     }
 
-//    @Basic
-//    @Column(name = "content", nullable = false)
-//    public byte[] getContent() {
-//        return content;
-//    }
-//
-//    public void setContent(byte[] content) {
-//        this.content = content;
-//    }
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "content", nullable = false)
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
+    }
 
     @Basic
     @Column(name = "page_count", nullable = false)
@@ -80,8 +80,8 @@ public class BookEntity {
         this.publishYear = publishYear;
     }
 
-    @Basic
-    @Column(name = "image", nullable = true)
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "image", nullable = false)
     public byte[] getImage() {
         return image;
     }

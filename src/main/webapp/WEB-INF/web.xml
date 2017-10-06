@@ -10,6 +10,14 @@
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  <session-config>
+    <session-timeout>60</session-timeout>
+  </session-config>
+
+  <error-page>
+    <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+    <location>/faces/index.xhtml?faces-redirect=true</location>
+  </error-page>
 
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>

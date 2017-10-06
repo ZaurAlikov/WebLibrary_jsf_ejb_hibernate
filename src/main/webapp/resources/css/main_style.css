@@ -4,20 +4,8 @@ body{
     margin: 0;
     padding: 0;
     color: #000;
-    /*font-size: 13px;*/
     height: 100%;
 }
-/*ul.nav a:hover, ul.nav a:active, ul.nav a:focus {*/
-    /*background-color: #FFFFFF;*/
-    /*color: #999;*/
-    /*-webkit-padding-start: 5px;*/
-/*}*/
-/*ul.nav{*/
-    /*line-height: 25px;*/
-    /*-webkit-padding-start: 0px;*/
-    /**/
-/*}*/
-
 .genres a:hover, a:active, a:focus{
     background-color: #FFFFFF;
     color: #999;
@@ -35,9 +23,18 @@ body{
     margin-top: 9px;
     margin-bottom: 5px;
 }
-.sel_genre a:link{
+.genres a.sel_genre{
     color: #0000ff;
     -webkit-padding-start: 5px;
+}
+.pager a.sel_page{
+    color: #0000ff;
+    text-decoration: underline;
+}
+.pager{
+    font-size: 12px;
+    text-align: left;
+    padding-left: 10px;
 }
 a:link {
     color: #34394a;
@@ -147,11 +144,12 @@ li{
 .col_2{
     width: 25%;
 }
-.col_2 a:visited{
+.col_2 a.book_name:visited {
     color: blue;
 }
-.col_2 a:hover, a:active, a:focus{
+.col_2 a.book_name:hover, a.book_name:active, a.book_name:focus{
     color: navy;
+
 }
 .col_2 p{
     font-size: 11px;
@@ -159,15 +157,26 @@ li{
     margin-bottom: 5px;
     margin-top: 5px;
 }
+.col_2 p.p_book_name{
+    margin-bottom: 15px;
+}
 .col_3 p{
     font-size: 11px;
     text-align: left;
 }
-p.book_name{
-    text-align: left;
+a.book_name{
+    font-weight: bold;
     font-size: 12px;
-    margin-bottom: 10px;
-    margin-top: 5px;
+}
+.pager{
+    font-size: 13px;
+}
+.pager a{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.pager a:hover, a:active, a:focus{
+    color: #0000ff;
 }
 .footer{
     font-size: 10px;

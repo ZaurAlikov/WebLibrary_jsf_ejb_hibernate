@@ -5,13 +5,15 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <f:event name="checkLogin" listener="#{usersController.checkLogin}" type="preRenderView"/>
 <h:head>
     <title>#{mess.title}</title>
 </h:head>
 <h:body>
     <ui:composition template="/templates/library_template.xhtml">
         <ui:define name="content">
-            <p class="count_book"><strong>#{mess.find_books} #{searchController.books.size()}</strong></p>
+            <p class="count_book"><strong>#{mess.find_books} #{searchController.bookCount}</strong></p>
 
             <h:dataTable value="#{searchController.books}" var="b" cellspacing="10px" styleClass="main_table" columnClasses="col_1,col_2,col_3">
                 <h:column>
@@ -19,7 +21,7 @@
                 </h:column>
                 <h:column>
                     <div>
-                        <p class="book_name"><strong><a href="#">#{b.name}</a></strong></p>
+                        <p class="p_book_name"><h:outputLink value="#{request.contextPath}/ShowPdfFile?id=#{b.id}" styleClass="book_name" target="_blank">#{b.name}</h:outputLink></p>
                         <p><strong>#{mess.author} </strong>#{b.author.fio}</p>
                         <p><strong>#{mess.str_count} </strong>#{b.pageCount} #{mess.str}</p>
                         <p><strong>#{mess.publisher} </strong>#{b.publisher.name}</p>
@@ -28,13 +30,24 @@
                     </div>
                 </h:column>
                 <h:column>
-                    <div class="book_details">
+                    <div class="book_desc">
                         <p><strong>#{mess.description}</strong></p>
                         <p>#{b.descr}</p>
                     </div>
                 </h:column>
             </h:dataTable>
+            <div class="pager">
+                <h:form rendered="#{searchController.bookCount > searchController.bookOnPage}">
+                    <h:outputText value="#{mess.pages}"/>
+                    <ui:repeat value="#{searchController.pageCount}" var="page">
+                        <h:commandLink value="#{page}" action="#{searchController.fillBooks}" styleClass="#{page == searchController.selectedPage ? 'sel_page' : ''}">
+                            <f:param name="selected_page" value="#{page}"/>
+                        </h:commandLink>
+                    </ui:repeat>
+                </h:form>
+            </div>
         </ui:define>
     </ui:composition>
 </h:body>
+</f:view>
 </html>

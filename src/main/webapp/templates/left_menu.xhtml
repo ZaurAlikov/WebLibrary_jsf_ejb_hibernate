@@ -12,19 +12,20 @@
 <h:body>
     <ui:composition>
         <h5 class="genre_list">#{mess.genres}</h5>
-        <h:form>
-            <div class="genres">
-                <p class="#{searchController.selectedGenre == 0 ? 'sel_genre' : ''}">
-                    <h:commandLink value="#{mess.all_books}" action="#{searchController.fillAllBooks}"/>
+        <h:form styleClass="genres">
+            <p>
+                <h:commandLink value="#{mess.all_books}" action="#{searchController.fillBooks}" styleClass="#{searchController.selectedGenre == 0 ? 'sel_genre' : ''}">
+                    <f:param name="type_search" value="all"/>
+                </h:commandLink>
+            </p>
+            <ui:repeat value="#{genresController.genresList}" var="g">
+                <p>
+                    <h:commandLink value="#{g.name}" action="#{searchController.fillBooks}" styleClass="#{g.id == searchController.selectedGenre ? 'sel_genre' : ''}">
+                        <f:param name="type_search" value="genre"/>
+                        <f:param name="genre_id" value="#{g.id}"/>
+                    </h:commandLink>
                 </p>
-                <ui:repeat value="#{genresController.genresList}" var="g">
-                    <p class="#{g.id == searchController.selectedGenre ? 'sel_genre' : ''}">
-                        <h:commandLink value="#{g.name}" action="#{searchController.fillBooksByGenre}">
-                            <f:param name="genre_id" value="#{g.id}"/>
-                        </h:commandLink>
-                    </p>
-                </ui:repeat>
-            </div>
+            </ui:repeat>
         </h:form>
     </ui:composition>
 </h:body>
