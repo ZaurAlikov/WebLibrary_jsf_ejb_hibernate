@@ -12,7 +12,8 @@
 <h:body>
     <ui:composition>
         <h5 class="genre_list">#{mess.genres}</h5>
-        <h:form styleClass="genres">
+        <f:ajax event="onclick" render="bookgenres :booklist :bookcount :bookpager :searchbook">
+        <h:form id="bookgenres" styleClass="genres">
             <p>
                 <h:commandLink value="#{mess.all_books}" action="#{searchController.fillBooks}" styleClass="#{searchController.selectedGenre == 0 ? 'sel_genre' : ''}">
                     <f:param name="type_search" value="all"/>
@@ -27,6 +28,7 @@
                 </p>
             </ui:repeat>
         </h:form>
+        </f:ajax>
     </ui:composition>
 </h:body>
 </html>

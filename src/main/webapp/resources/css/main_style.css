@@ -82,7 +82,7 @@ li{
 }
 .welcome{
     text-align: right;
-    line-height: 18px;
+    line-height: 9px;
     font-weight: bold;
     float:right;
     font-size: 10px;
@@ -105,7 +105,7 @@ li{
     text-align: right;
 }
 .search_string{
-    width: 710px;
+    width: 705px;
     float: left;
     padding: 3px;
     margin-left:10px;
@@ -114,6 +114,7 @@ li{
 .sel_menu{
     float: left;
     height: 25px;
+    width: 85px;
 }
 .left_menu{
     width: 17%;
@@ -137,14 +138,17 @@ li{
     text-align: center;
 }
 .count_book{
+    font-weight: bold;
     text-align: left;
     font-size: 13px;
     padding-left: 10px;
+    padding-top: 12px;
+    padding-bottom: 20px;
 }
 .col_2{
     width: 25%;
 }
-.col_2 a.book_name:visited {
+.col_2 a.book_name {
     color: blue;
 }
 .col_2 a.book_name:hover, a.book_name:active, a.book_name:focus{
@@ -233,6 +237,7 @@ a.book_name{
     padding: 2px 10px 3px 10px;
     text-decoration: none;
     outline:none;
+    width: 60px;
 }
 .btn:hover {
     background: #adadad;

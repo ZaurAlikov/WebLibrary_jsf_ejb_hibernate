@@ -6,16 +6,17 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <f:view>
-    <f:event name="checkLogin" listener="#{usersController.checkLogin}" type="preRenderView"/>
+    <f:event name="checkLogin" listener="#{usersController.checkLogin()}" type="preRenderView"/>
 <h:head>
     <title>#{mess.title}</title>
 </h:head>
 <h:body>
     <ui:composition template="/templates/library_template.xhtml">
         <ui:define name="content">
-            <p class="count_book"><strong>#{mess.find_books} #{searchController.bookCount}</strong></p>
-
-            <h:dataTable value="#{searchController.books}" var="b" cellspacing="10px" styleClass="main_table" columnClasses="col_1,col_2,col_3">
+            <div class="count_book">
+                <h:outputText id="bookcount" value="#{mess.find_books} #{searchController.bookCount}"/>
+            </div>
+            <h:dataTable id="booklist" value="#{searchController.books}" var="b" cellspacing="10px" styleClass="main_table" columnClasses="col_1,col_2,col_3">
                 <h:column>
                     <h:graphicImage value="/ShowImage?id=#{b.id}" width="120" height="160"/>
                 </h:column>
@@ -36,16 +37,18 @@
                     </div>
                 </h:column>
             </h:dataTable>
-            <div class="pager">
-                <h:form rendered="#{searchController.bookCount > searchController.bookOnPage}">
-                    <h:outputText value="#{mess.pages}"/>
-                    <ui:repeat value="#{searchController.pageCount}" var="page">
-                        <h:commandLink value="#{page}" action="#{searchController.fillBooks}" styleClass="#{page == searchController.selectedPage ? 'sel_page' : ''}">
-                            <f:param name="selected_page" value="#{page}"/>
-                        </h:commandLink>
-                    </ui:repeat>
-                </h:form>
-            </div>
+            <h:panelGrid id="bookpager" styleClass="pager" columns="2">
+                <f:ajax event="onclick" render=":bookgenres :booklist :bookcount bookpager :searchbook">
+                    <h:form  rendered="#{searchController.bookCount > searchController.bookOnPage}">
+                        <h:outputText value="#{mess.pages}"/>
+                        <ui:repeat value="#{searchController.pageCount}" var="page">
+                            <h:commandLink value="#{page}" action="#{searchController.fillBooks}" styleClass="#{page == searchController.selectedPage ? 'sel_page' : ''}">
+                                <f:param name="selected_page" value="#{page}"/>
+                            </h:commandLink>
+                        </ui:repeat>
+                    </h:form>
+                </f:ajax>
+            </h:panelGrid>
         </ui:define>
     </ui:composition>
 </h:body>

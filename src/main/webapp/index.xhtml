@@ -5,12 +5,23 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view locale="#{localeChanger.locale}">
 <h:head>
     <title>#{mess.title}</title>
     <h:outputStylesheet library="css" name="index_style.css"/>
 </h:head>
 <h:body>
     <div class="main">
+        <div>
+            <h:form styleClass="locale_class">
+                <h:commandLink action="#{localeChanger.selectLanguage('ru')}">
+                    <h:graphicImage library="images" name="Russia.png"/>
+                </h:commandLink>
+                <h:commandLink action="#{localeChanger.selectLanguage('en')}">
+                    <h:graphicImage library="images" name="United_Kingdom.png"/>
+                </h:commandLink>
+            </h:form>
+        </div>
         <div class="welcome_text">
             <p><h:graphicImage styleClass="image" library="images" name="logo.png"/></p>
             <p><h:outputText value="#{mess.welcome}"/></p>
@@ -36,4 +47,5 @@
         </div>
     </div>
 </h:body>
+</f:view>
 </html>

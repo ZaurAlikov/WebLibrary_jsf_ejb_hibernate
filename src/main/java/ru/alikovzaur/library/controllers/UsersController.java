@@ -171,7 +171,7 @@ public class UsersController implements Serializable {
         setPassword("");
     }
 
-    public void checkLogin(ComponentSystemEvent event){
+    public void checkLogin(){
         if (!loggedIn){
             FacesContext context = FacesContext.getCurrentInstance();
             ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
