@@ -3,6 +3,7 @@ package ru.alikovzaur.library.controllers;
 import ru.alikovzaur.library.enums.MonthEnum;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -15,7 +16,7 @@ import java.util.Calendar;
 import java.util.ResourceBundle;
 
 @Named
-@SessionScoped
+@RequestScoped
 public class DateController implements Serializable {
     private String day = "01";
     private MonthEnum month = MonthEnum.Январь;

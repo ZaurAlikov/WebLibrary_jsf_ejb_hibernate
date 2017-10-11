@@ -19,6 +19,8 @@ public class BookEntity {
     private AuthorEntity author;
     private GenreEntity genre;
     private PublisherEntity publisher;
+    @Transient
+    private boolean edit;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -40,6 +42,7 @@ public class BookEntity {
         this.name = name;
     }
 
+    @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "content", nullable = false)
     public byte[] getContent() {
@@ -80,6 +83,7 @@ public class BookEntity {
         this.publishYear = publishYear;
     }
 
+    @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "image", nullable = false)
     public byte[] getImage() {
@@ -91,7 +95,7 @@ public class BookEntity {
     }
 
     @Basic
-    @Column(name = "descr", nullable = true, length = 5000)
+    @Column(name = "descr", nullable = false, length = 5000)
     public String getDescr() {
         return descr;
     }
@@ -130,6 +134,11 @@ public class BookEntity {
         this.publisher = publisher;
     }
 
+    public boolean isEdit() {
+        return edit;
+    }
 
-
+    public void setEdit(boolean edit) {
+        this.edit = edit;
+    }
 }

@@ -1,6 +1,6 @@
 package ru.alikovzaur.library.servlets;
 
-import ru.alikovzaur.library.controllers.SearchController;
+import ru.alikovzaur.library.controllers.BookController;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -15,7 +15,7 @@ import java.io.OutputStream;
 public class ShowImage extends HttpServlet {
 
     @Inject
-    private SearchController searchController;
+    private BookController bookController;
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -23,7 +23,7 @@ public class ShowImage extends HttpServlet {
         OutputStream out = resp.getOutputStream();
         try{
             long id = Long.valueOf(req.getParameter("id"));
-            byte[] image = searchController.getImage(id);
+            byte[] image = bookController.getImage(id);
             resp.setContentLength(image.length);
             out.write(image);
         } catch (Exception ex){

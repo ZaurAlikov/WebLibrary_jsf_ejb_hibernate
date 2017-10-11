@@ -32,13 +32,13 @@
         <div class="search_div">
             <f:ajax event="onclick" render=":bookgenres :booklist :bookcount :bookpager searchbook">
                 <h:form id="searchbook" styleClass="search_form">
-                    <h:inputText id="input_text" value="#{searchController.searchField}" styleClass="search_string">
+                    <h:inputText id="input_text" value="#{bookController.searchField}" styleClass="search_string">
                         <f:ajax event="change"/>
                     </h:inputText>
-                    <h:commandButton value="#{mess.search}" action="#{searchController.fillBooks}" styleClass="btn">
+                    <h:commandButton value="#{mess.search}" action="#{bookController.fillBooks}" styleClass="btn">
                         <f:param name="type_search" value="search"/>
                     </h:commandButton>
-                    <h:selectOneMenu value="#{searchController.searchType}" styleClass="sel_menu">
+                    <h:selectOneMenu value="#{bookController.searchType}" styleClass="sel_menu">
                         <f:selectItems value="#{searchTypeController.searchTypeList}"/>
                         <f:ajax event="change"/>
                     </h:selectOneMenu>
