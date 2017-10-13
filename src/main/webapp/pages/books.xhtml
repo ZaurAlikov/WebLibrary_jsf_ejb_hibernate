@@ -14,9 +14,20 @@
     <ui:composition template="/templates/library_template.xhtml">
         <ui:define name="content">
             <div class="count_book">
-                <h:outputText id="bookcount" value="#{mess.find_books} #{bookController.bookCount}"/>
+                <h:outputText id="bookcount" value="#{mess.find_books} #{bookController.bookCount}" styleClass="book_count"/>
+                <h:form styleClass="book_on_page">
+                    <h:outputText value="#{mess.book_on_page}"/>
+                    <h:selectOneMenu value="#{bookController.bookOnPage}" valueChangeListener="#{bookController.booksPageChanged}">
+                        <f:selectItem itemValue="2"/>
+                        <f:selectItem itemValue="5"/>
+                        <f:selectItem itemValue="10"/>
+                        <f:selectItem itemValue="30"/>
+                        <f:selectItem itemValue="50"/>
+                        <f:ajax event="change" render=":bookform:booklist :bookpager"/>
+                    </h:selectOneMenu>
+                </h:form>
             </div>
-            <h:form>
+            <h:form id="bookform">
             <h:dataTable id="booklist" value="#{bookController.books}" var="b" cellspacing="10px" styleClass="main_table" columnClasses="col_1,col_2,col_3">
                 <h:column>
                     <h:graphicImage value="/ShowImage?id=#{b.id}" width="120" height="160"/>
@@ -24,17 +35,17 @@
                 <h:column>
                     <div>
                         <p class="p_book_name">
-                            <h:outputText value=" #{mess.bookname}" style="font-weight: bold" rendered="#{b.edit}"/>
+                            <h:outputText value=" #{mess.bookname}" rendered="#{b.edit}"/>
                             <h:outputLink value="#{request.contextPath}/ShowPdfFile" styleClass="book_name" target="_blank" rendered="#{!b.edit}">
                                 <h:outputText value=" #{b.name}"/>
                                 <f:param name="id" value="#{b.id}"/>
                                 <f:param name="action" value="read"/>
                             </h:outputLink>
-                            <h:inputText value="#{bookController.bookName}" style="width: 100%" rendered="#{b.edit}"/>
+                            <h:inputText value="#{bookController.bookName}" rendered="#{b.edit}"/>
                         </p>
                         <p><strong>#{mess.author}</strong>
                             <h:outputText value=" #{b.author.fio}" rendered="#{!b.edit}"/>
-                            <h:inputText value="#{bookController.author}" style="width: 100%" rendered="#{b.edit}"/>
+                            <h:inputText value="#{bookController.author}" rendered="#{b.edit}"/>
                         </p>
                         <p><strong>#{mess.str_count}</strong>
                             <h:outputText value=" #{b.pageCount} #{mess.str}" rendered="#{!b.edit}"/>
@@ -43,7 +54,7 @@
                         </p>
                         <p><strong>#{mess.publisher}</strong>
                             <h:outputText value=" #{b.publisher.name}" rendered="#{!b.edit}"/>
-                            <h:inputText value="#{bookController.publisher}" style="width: 100%" rendered="#{b.edit}"/>
+                            <h:inputText value="#{bookController.publisher}" rendered="#{b.edit}"/>
                         </p>
                         <p><strong>#{mess.year_pub}</strong>
                             <h:outputText value=" #{b.publishYear} #{mess.year}" rendered="#{!b.edit}"/>
@@ -52,7 +63,7 @@
                         </p>
                         <p><strong>#{mess.ISBN}</strong>
                             <h:outputText value=" #{b.isbn}" rendered="#{!b.edit}"/>
-                            <h:inputText value="#{bookController.isbn}" style="width: 100%" rendered="#{b.edit}"/>
+                            <h:inputText value="#{bookController.isbn}" rendered="#{b.edit}"/>
                         </p>
                         <p class="action">
                             <h:outputLink value="#{request.contextPath}/ShowPdfFile" target="_blank" rendered="#{!b.edit}">
@@ -65,14 +76,14 @@
                         </p>
                         <p class="action">
                             <h:commandLink action="#{bookController.editBook(b.id)}" rendered="#{!b.edit}">
-                                <h:graphicImage library="images" name="edit.png" width="20" height="20" rendered="#{!b.edit}"/>
+                                <h:graphicImage library="images" name="edit.png" width="18" height="18" rendered="#{!b.edit}"/>
                                 <h:outputText value=" #{mess.edit}"/>
                                 <f:ajax render="@form"/>
                             </h:commandLink>
                         </p>
                         <p class="action">
                             <h:commandLink action="#{bookController.saveBook(b.id)}" rendered="#{b.edit}">
-                                <h:graphicImage library="images" name="save.png" width="20" height="20" rendered="#{b.edit}"/>
+                                <h:graphicImage library="images" name="save.png" width="18" height="18" rendered="#{b.edit}"/>
                                 <h:outputText value=" #{mess.save}"/>
                                 <f:ajax execute="@form" render="@form"/>
                             </h:commandLink>

@@ -9,7 +9,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
+import javax.xml.bind.ValidationEvent;
 import java.io.Serializable;
 import java.util.*;
 
@@ -44,7 +46,7 @@ public class BookController implements Serializable {
         this.selectedGenre = -1L;
         this.bookCount = 0;
         this.selectedPage = 1;
-        this.bookOnPage = 2;
+        this.bookOnPage = 5;
         this.books = new ArrayList<>();
         this.pageCount = new ArrayList<>();
         this.typeSearch = "all";
@@ -222,6 +224,12 @@ public class BookController implements Serializable {
         for (int i = 1; i <= pages; i++){
             pageCount.add(i);
         }
+    }
+
+    public void booksPageChanged(ValueChangeEvent event){
+        selectedPage = 1;
+        bookOnPage = Integer.valueOf(event.getNewValue().toString());
+        fillBooks();
     }
 
     public void editBook(long id){

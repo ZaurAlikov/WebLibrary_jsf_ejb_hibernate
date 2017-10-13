@@ -43,10 +43,6 @@ a:visited {
     color: #4E5869;
     text-decoration: none;
 }
-
-li{
-    list-style-type: none;
-}
 .container {
     background: white;
     width: 900px;
@@ -133,7 +129,8 @@ li{
     text-align: center;
 }
 .action a{
-    font-weight: bold;
+    font-weight: normal;
+    font-size: 10px;
     color: #0000ff;
     vertical-align: super;
 }
@@ -149,8 +146,19 @@ li{
     padding-top: 12px;
     padding-bottom: 20px;
 }
+.book_count{
+    float: left;
+}
+.book_on_page{
+    float: right;
+    font-weight: normal;
+    font-size: 12px;
+}
 .col_2{
     width: 25%;
+}
+.col_2 input{
+    width: 100%;
 }
 .col_2 a.book_name {
     color: blue;
@@ -167,6 +175,7 @@ li{
 }
 .col_2 p.p_book_name{
     margin-bottom: 15px;
+    font-weight: bold;
 }
 .col_3 p{
     font-size: 11px;
@@ -191,33 +200,6 @@ a.book_name{
     text-align: right;
     font-style: italic;
 }
-/*.book_list{*/
-    /*!*text-align: left;*!*/
-    /*position: relative;*/
-    /*padding: 10px 0;*/
-    /*width: 80%;*/
-    /*float: left;*/
-/*}*/
-/*.book_main{*/
-    /*text-align: left;*/
-    /*float: left;*/
-    /*width: 33%;*/
-/*}*/
-/*.book_title{*/
-    /*height: 50px;*/
-    /*text-align: center;*/
-    /*font-size: 15px;*/
-    /*font-weight: bold;*/
-/*}*/
-/*.book_img{*/
-    /*text-align: center;*/
-    /*!*width: 150px;*!*/
-    /*height: 260px;*/
-/*}*/
-/*.book_disc{*/
-    /*text-align: center;*/
-    /*font-size: 10px;*/
-/*}*/
 .btn {
     margin-right:10px;
     float: left;
