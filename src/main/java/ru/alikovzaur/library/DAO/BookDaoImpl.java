@@ -16,25 +16,31 @@ import java.util.List;
 
 @Stateless
 public class BookDaoImpl implements BookDAO, Serializable {
-    private HashMap<Integer, List<BookEntity>> booksMap;
-    private List<BookEntity> books;
-    private int bookCount;
-    private Query query;
+//    private HashMap<Integer, List<BookEntity>> booksMap;
+//    private List<BookEntity> books;
+//    private int bookCount;
+//    private Query query;
 
     @PersistenceContext(unitName = "libraryPU")
     private EntityManager entityManager;
 
-    @PostConstruct
-    public void postConstruct() {
-        this.bookCount = 0;
-        this.query = null;
-        this.books = new ArrayList<>();
-        this.booksMap = new HashMap<>();
-    }
+//    @PostConstruct
+//    public void postConstruct() {
+//        this.bookCount = 0;
+//        this.query = null;
+//        this.books = new ArrayList<>();
+//        this.booksMap = new HashMap<>();
+//    }
 
     @Override
     @SuppressWarnings("unchecked")
     public HashMap<Integer, List<BookEntity>> getBooks(String typeSearch, String searchType, String searchField, int selectedPage, long genreId, int maxResults, int firstResult) {
+
+        HashMap<Integer, List<BookEntity>> booksMap = new HashMap<>();
+        List<BookEntity> books = new ArrayList<>();
+        int bookCount = 0;
+        Query query = null;
+
         switch (typeSearch) {
             case "all": {
                 query = entityManager.createQuery("select book from BookEntity book order by book.name");

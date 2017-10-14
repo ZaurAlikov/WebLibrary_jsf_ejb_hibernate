@@ -2,19 +2,31 @@ package ru.alikovzaur.library.entityes;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.GeneratorType;
+
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 @Table(name = "users", schema = "library")
 public class UsersEntity {
+    private int id;
     private String name;
     private String surname;
     private Date birthday;
     private String email;
     private SexTabEntity sex;
-    private String login;
-    private String password;
+    private AuthInfoEntity authInfo;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Basic
     public String getName() {
@@ -52,7 +64,7 @@ public class UsersEntity {
         this.email = email;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "sex_id", nullable = false)
     public SexTabEntity getSex() {
         return this.sex;
@@ -62,22 +74,14 @@ public class UsersEntity {
         this.sex = sex;
     }
 
-    @Id
-    public String getLogin() {
-        return login;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "auth_id")
+    public AuthInfoEntity getAuthInfo() {
+        return authInfo;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    @Basic
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAuthInfo(AuthInfoEntity authInfo) {
+        this.authInfo = authInfo;
     }
 
     @Override
