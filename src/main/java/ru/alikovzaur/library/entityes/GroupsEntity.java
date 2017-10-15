@@ -9,31 +9,31 @@ import java.util.List;
 @Entity
 @Table(name = "groups", schema = "library")
 public class GroupsEntity {
-    private int id;
-    private String group;
+    private String username;
+    private String role;
     private List<AuthInfoEntity> auth_info;
 
     @Id
-    @Column(name = "id")
-    public int getId() {
-        return id;
+    @Column(name = "username")
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Basic
-    @Column(name = "group")
-    public String getGroup() {
-        return group;
+    @Column(name = "role")
+    public String getRole() {
+        return role;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setRole(String role) {
+        this.role = role;
     }
 
-    @OneToMany(mappedBy = "group")
+    @ManyToMany(mappedBy = "group")
     public List<AuthInfoEntity> getAuth_info() {
         return auth_info;
     }

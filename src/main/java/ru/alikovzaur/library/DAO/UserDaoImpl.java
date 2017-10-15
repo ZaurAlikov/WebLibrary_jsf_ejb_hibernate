@@ -1,5 +1,6 @@
 package ru.alikovzaur.library.DAO;
 
+import ru.alikovzaur.library.entityes.AuthInfoEntity;
 import ru.alikovzaur.library.entityes.GroupsEntity;
 import ru.alikovzaur.library.entityes.SexTabEntity;
 import ru.alikovzaur.library.entityes.UsersEntity;
@@ -29,7 +30,7 @@ public class UserDaoImpl implements UserDAO {
     @Override
     @SuppressWarnings("unchecked")
     public UsersEntity getUserByLogin(String login) {
-        Query query = entityManager.createQuery("SELECT user FROM UsersEntity user WHERE user.authInfo.login = :login");
+        Query query = entityManager.createQuery("SELECT user FROM UsersEntity user WHERE user.username = :login");
         query.setParameter("login", login);
         List<UsersEntity> usersEntities = query.getResultList();
         if (usersEntities.size() == 0){
@@ -39,7 +40,9 @@ public class UserDaoImpl implements UserDAO {
     }
 
     @Override
-    public void createUser(UsersEntity usersEntity) throws Exception {
+    public void createUser(UsersEntity usersEntity, GroupsEntity groupsEntity, AuthInfoEntity authInfoEntity) throws Exception {
+        entityManager.persist(groupsEntity);
+        entityManager.persist(authInfoEntity);
         entityManager.persist(usersEntity);
     }
 

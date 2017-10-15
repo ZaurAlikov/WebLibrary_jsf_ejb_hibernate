@@ -1,6 +1,7 @@
 package ru.alikovzaur.library.controllers;
 
 import ru.alikovzaur.library.entityes.AuthInfoEntity;
+import ru.alikovzaur.library.entityes.GroupsEntity;
 import ru.alikovzaur.library.entityes.UsersEntity;
 import ru.alikovzaur.library.interfaces.UserDAO;
 
@@ -14,12 +15,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 @Named
 @SessionScoped
 public class UsersController implements Serializable {
-    private int id;
+
     private String name;
     private String surname;
     private Date birthday;
@@ -27,7 +30,7 @@ public class UsersController implements Serializable {
     private String sex;
     private String login;
     private String password;
-    private String group;
+    private List<GroupsEntity> group;
     private boolean loggedIn = false;
 
     @EJB
@@ -37,14 +40,6 @@ public class UsersController implements Serializable {
     private DateController dateController;
 
     private ResourceBundle res = ResourceBundle.getBundle("nls/message", FacesContext.getCurrentInstance().getViewRoot().getLocale());
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -102,11 +97,11 @@ public class UsersController implements Serializable {
         this.password = password;
     }
 
-    public String getGroup() {
+    public List<GroupsEntity> getGroup() {
         return group;
     }
 
-    public void setGroup(String group) {
+    public void setGroup(List<GroupsEntity> group) {
         this.group = group;
     }
 
@@ -126,13 +121,12 @@ public class UsersController implements Serializable {
             setErrorMessage("error_incorrect_login");
             return "index";
         } else if (usersEntity.getAuthInfo().getPassword().equals(password)){
-            id = usersEntity.getId();
             name = usersEntity.getName();
             surname = usersEntity.getSurname();
             birthday = usersEntity.getBirthday();
             email = usersEntity.getEmail();
             sex = usersEntity.getSex().getSex();
-            group = usersEntity.getAuthInfo().getGroup().getGroup();
+            group = usersEntity.getAuthInfo().getGroup();
             loggedIn = true;
             return "books";
         }
@@ -150,18 +144,28 @@ public class UsersController implements Serializable {
             setErrorMessage("error_login_exists");
             return "registration";
         }
+
+        GroupsEntity groupsEntity = new GroupsEntity();
+        List<GroupsEntity> groupsEntities = new ArrayList<>();
+        groupsEntity.setUsername(login);
+        groupsEntity.setRole("users");
+        groupsEntities.add(groupsEntity);
+
+        AuthInfoEntity authInfoEntity = new AuthInfoEntity();
+        authInfoEntity.setUsername(login);
+        authInfoEntity.setPassword(password);
+        authInfoEntity.setGroup(groupsEntities);
+
         usersEntity = new UsersEntity();
+        usersEntity.setUsername(login);
         usersEntity.setName(name);
         usersEntity.setSurname(surname);
         usersEntity.setBirthday(dateController.getCurrentDate());
         usersEntity.setEmail(email);
         usersEntity.setSex(userDao.getSex(sex));
-        AuthInfoEntity authInfoEntity = new AuthInfoEntity();
-        authInfoEntity.setLogin(login);
-        authInfoEntity.setPassword(password);
-        authInfoEntity.setGroup(userDao.getGroup("users"));
         usersEntity.setAuthInfo(authInfoEntity);
-        userDao.createUser(usersEntity);
+
+        userDao.createUser(usersEntity, groupsEntity, authInfoEntity);
         loggedIn = true;
         return "books";
     }

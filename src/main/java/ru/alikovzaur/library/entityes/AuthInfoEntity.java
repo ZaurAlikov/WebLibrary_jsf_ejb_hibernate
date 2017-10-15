@@ -4,40 +4,30 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "auth_info", schema = "library")
 public class AuthInfoEntity {
-    private int id;
-    private String login;
+
+    private String username;
     private String password;
-    private GroupsEntity group;
+    private List<GroupsEntity> group;
     @Transient
     private UsersEntity userInfo;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    public int getId() {
-        return id;
+    @Column(name = "username")
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Basic
-    @Column(name = "login")
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Basic
-    @Column(name = "password")
+    @Column(name = "passwd")
     public String getPassword() {
         return password;
     }
@@ -46,10 +36,14 @@ public class AuthInfoEntity {
         this.password = password;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    public GroupsEntity getGroup() {
+    @ManyToMany
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    public List<GroupsEntity> getGroup() {
         return group;
+    }
+
+    public void setGroup(List<GroupsEntity> group) {
+        this.group = group;
     }
 
     @OneToOne(mappedBy = "authInfo", cascade = CascadeType.ALL)
@@ -61,9 +55,7 @@ public class AuthInfoEntity {
         this.userInfo = userInfo;
     }
 
-    public void setGroup(GroupsEntity group) {
-        this.group = group;
-    }
+
 
     @Override
     public boolean equals(Object obj) {

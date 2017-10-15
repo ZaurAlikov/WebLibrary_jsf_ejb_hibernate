@@ -10,7 +10,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "users", schema = "library")
 public class UsersEntity {
-    private int id;
+    private String username;
     private String name;
     private String surname;
     private Date birthday;
@@ -19,13 +19,12 @@ public class UsersEntity {
     private AuthInfoEntity authInfo;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public int getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Basic
@@ -75,7 +74,7 @@ public class UsersEntity {
     }
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "auth_id")
+    @JoinColumn(name = "username")
     public AuthInfoEntity getAuthInfo() {
         return authInfo;
     }
