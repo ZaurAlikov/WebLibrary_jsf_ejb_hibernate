@@ -29,7 +29,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>registration</from-outcome>
-            <to-view-id>/pages/registration.xhtml</to-view-id>
+            <to-view-id>/registration.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>

@@ -11,9 +11,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.LinkedHashMap;
-import java.util.Calendar;
-import java.util.ResourceBundle;
+import java.util.*;
 
 @Named
 @RequestScoped
@@ -24,6 +22,7 @@ public class DateController implements Serializable {
     private LinkedHashMap<String, Integer> dayList;
     private static LinkedHashMap<String, MonthEnum> monthList;
     private static LinkedHashMap<String, Integer> yearList;
+    private List<String> leapYears;
 
     @PostConstruct
     public void postConstruct() {
@@ -47,6 +46,11 @@ public class DateController implements Serializable {
         int year = calendar.get(Calendar.YEAR) - 5;
         for(int i = year; i>=1920; i--){
             yearList.put(String.valueOf(i), i);
+        }
+
+        leapYears = new ArrayList<>();
+        for (int i = 1920; i <= year; i+=4){
+            leapYears.add(String.valueOf(i));
         }
     }
 
@@ -112,7 +116,12 @@ public class DateController implements Serializable {
                 month == MonthEnum.Ноябрь){
             daysCount = 30;
         } else if (month == MonthEnum.Февраль){
-            daysCount = 29;
+            if (leapYears.contains(year)){
+                daysCount = 29;
+            } else {
+                daysCount = 28;
+            }
+
         }
         for(int i = 1; i<=daysCount; i++){
             String s = String.format("%02d", i);

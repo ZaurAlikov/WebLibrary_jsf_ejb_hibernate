@@ -4,20 +4,25 @@ import ru.alikovzaur.library.entityes.AuthInfoEntity;
 import ru.alikovzaur.library.entityes.GroupsEntity;
 import ru.alikovzaur.library.entityes.UsersEntity;
 import ru.alikovzaur.library.interfaces.UserDAO;
+import ru.alikovzaur.library.utils.Sha256Converter;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static ru.alikovzaur.library.utils.Sha256Converter.hash256;
 
 @Named
 @SessionScoped
@@ -31,7 +36,8 @@ public class UsersController implements Serializable {
     private String login;
     private String password;
     private List<GroupsEntity> group;
-    private boolean loggedIn = false;
+    private UIComponent loginField;
+//    private boolean loggedIn = false;
 
     @EJB
     private UserDAO userDao;
@@ -105,33 +111,64 @@ public class UsersController implements Serializable {
         this.group = group;
     }
 
-    public boolean isLoggedIn() {
-        return loggedIn;
+//    public boolean isLoggedIn() {
+//        return loggedIn;
+//    }
+//
+//    public void setLoggedIn(boolean loggedIn) {
+//        this.loggedIn = loggedIn;
+//    }
+
+    public UIComponent getLoginField() {
+        return loginField;
     }
 
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
+    public void setLoginField(UIComponent loginField) {
+        this.loginField = loginField;
     }
 
-    public String checkPassword(){
-        UsersEntity usersEntity = userDao.getUserByLogin(login);
-        if(usersEntity == null){
-            this.setLogin("");
-            this.setPassword("");
-            setErrorMessage("error_incorrect_login");
-            return "index";
-        } else if (usersEntity.getAuthInfo().getPassword().equals(password)){
+
+//    public String checkPassword(){
+//        UsersEntity usersEntity = userDao.getUserByLogin(login);
+//        if(usersEntity == null){
+//            this.setLogin("");
+//            this.setPassword("");
+//            setErrorMessage("error_incorrect_login");
+//            return "index";
+//        } else if (usersEntity.getAuthInfo().getPassword().equals(password)){
+//            name = usersEntity.getName();
+//            surname = usersEntity.getSurname();
+//            birthday = usersEntity.getBirthday();
+//            email = usersEntity.getEmail();
+//            sex = usersEntity.getSex().getSex();
+//            group = usersEntity.getAuthInfo().getGroup();
+//            loggedIn = true;
+//            return "books";
+//        }
+//        this.setPassword("");
+//        setErrorMessage("error_incorrect_password");
+//        return "index";
+//    }
+
+    public String loginEnter(){
+        HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        try {
+            String username = httpServletRequest.getRemoteUser();
+            if (username != null) {
+                httpServletRequest.logout();
+            }
+            httpServletRequest.login(login,password);
+            UsersEntity usersEntity = userDao.getUserByLogin(login);
             name = usersEntity.getName();
             surname = usersEntity.getSurname();
             birthday = usersEntity.getBirthday();
             email = usersEntity.getEmail();
             sex = usersEntity.getSex().getSex();
             group = usersEntity.getAuthInfo().getGroup();
-            loggedIn = true;
             return "books";
+        } catch (ServletException e) {
+            setErrorMessage("error_login_failed");
         }
-        this.setPassword("");
-        setErrorMessage("error_incorrect_password");
         return "index";
     }
 
@@ -153,7 +190,7 @@ public class UsersController implements Serializable {
 
         AuthInfoEntity authInfoEntity = new AuthInfoEntity();
         authInfoEntity.setUsername(login);
-        authInfoEntity.setPassword(password);
+        authInfoEntity.setPassword(hash256(password));
         authInfoEntity.setGroup(groupsEntities);
 
         usersEntity = new UsersEntity();
@@ -166,11 +203,13 @@ public class UsersController implements Serializable {
         usersEntity.setAuthInfo(authInfoEntity);
 
         userDao.createUser(usersEntity, groupsEntity, authInfoEntity);
-        loggedIn = true;
-        return "books";
+//        loggedIn = true;
+        return "index";
     }
 
-    public String exit(){
+    public String exit() throws ServletException{
+        HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        httpServletRequest.logout();
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "exit";
     }
@@ -180,16 +219,25 @@ public class UsersController implements Serializable {
         setPassword("");
     }
 
-    public void checkLogin(){
-        if (!loggedIn){
-            FacesContext context = FacesContext.getCurrentInstance();
-            ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
-            handler.performNavigation("/faces/index.xhtml?faces-redirect=true");
-        }
+    public String regCancel(){
+        return "index?faces-redirect=true";
     }
+
+//    public void checkLogin(){
+//        if (!loggedIn){
+//            FacesContext context = FacesContext.getCurrentInstance();
+//            ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
+//            handler.performNavigation("/index.xhtml?faces-redirect=true");
+//        }
+//    }
 
     private void setErrorMessage(String msg){
         FacesMessage message = new FacesMessage(res.getString(msg));
-        FacesContext.getCurrentInstance().addMessage(null, message);
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (loginField.getId().equals("login")){
+            context.addMessage(loginField.getClientId(context), message);
+        } else {
+            context.addMessage(null, message);
+        }
     }
 }

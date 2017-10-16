@@ -39,7 +39,7 @@
                     </h:inputSecret>
                 </h:panelGrid>
                 <div class="button_jsf">
-                    <h:commandButton value="#{mess.enter}" action="#{usersController.checkPassword}"/>
+                    <h:commandButton value="#{mess.enter}" action="#{usersController.loginEnter}"/>
                     <br/><h:commandLink value="#{mess.registration_link}" action="registration" immediate="true" actionListener="#{usersController.regListener}"/>
                     <h:messages styleClass="error"/>
                 </div>

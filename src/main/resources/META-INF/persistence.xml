@@ -15,6 +15,7 @@
         <class>ru.alikovzaur.library.entityes.PublisherEntity</class>
         <class>ru.alikovzaur.library.entityes.GroupsEntity</class>
         <class>ru.alikovzaur.library.entityes.AuthInfoEntity</class>
+        <class>ru.alikovzaur.library.entityes.RolesEntity</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>

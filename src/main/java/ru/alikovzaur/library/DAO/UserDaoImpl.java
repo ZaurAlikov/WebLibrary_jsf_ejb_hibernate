@@ -41,8 +41,8 @@ public class UserDaoImpl implements UserDAO {
 
     @Override
     public void createUser(UsersEntity usersEntity, GroupsEntity groupsEntity, AuthInfoEntity authInfoEntity) throws Exception {
-        entityManager.persist(groupsEntity);
         entityManager.persist(authInfoEntity);
+        entityManager.persist(groupsEntity);
         entityManager.persist(usersEntity);
     }
 

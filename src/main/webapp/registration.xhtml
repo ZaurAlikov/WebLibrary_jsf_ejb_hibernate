@@ -27,7 +27,7 @@
                     <h:message styleClass="error" for="surname"/>
 
                     <h:outputText value="#{mess.login}"/>
-                    <h:inputText id="login" value="#{usersController.login}" required="true" requiredMessage="#{mess.error_empty_field}">
+                    <h:inputText id="login" value="#{usersController.login}" required="true" requiredMessage="#{mess.error_empty_field}" binding="#{usersController.loginField}">
                         <f:validator validatorId="indexFieldsValidator"/>
                     </h:inputText>
                     <h:message styleClass="error" for="login"/>
@@ -48,13 +48,14 @@
                         <h:selectOneMenu id="day" style="margin-right: 3px" value="#{dateController.day}">
                             <f:selectItems id="days" value="#{dateController.dayList}"/>
                         </h:selectOneMenu>
+                        <f:ajax execute="month year day" render="day">
                         <h:selectOneMenu id="month" style="margin-right: 3px" value="#{dateController.month}">
-                            <f:ajax execute="month day" render="day"/>
                             <f:selectItems value="#{dateController.monthList}"/>
                         </h:selectOneMenu>
                         <h:selectOneMenu id="year" value="#{dateController.year}">
                             <f:selectItems value="#{dateController.yearList}"/>
                         </h:selectOneMenu>
+                        </f:ajax>
                     </h:panelGroup>
                     <h:panelGroup></h:panelGroup>
 
@@ -67,6 +68,7 @@
                 </h:panelGrid>
                 <div class="button_jsf">
                     <h:commandButton value="#{mess.registration_link}" action="#{usersController.createUser}"/>
+                    <h:commandButton value="#{mess.registration_cancel}"  action="#{usersController.regCancel}" immediate="true"/>
                 </div>
             </h:form>
         </div>
