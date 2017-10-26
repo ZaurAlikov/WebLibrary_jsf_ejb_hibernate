@@ -45,15 +45,29 @@
                             <h:outputText value=" #{b.author.fio}" rendered="#{!b.edit}"/>
                             <h:inputText value="#{bookController.author}" rendered="#{b.edit}"/>
                         </p>
+
+                        <p><strong>#{mess.genre}</strong>
+                            <h:outputText value=" #{b.genre.name}" rendered="#{!b.edit}"/>
+                            <h:selectOneMenu id="genre" value="#{b.genre}" rendered="#{b.edit}" converter="#{genresController}" valueChangeListener="#{bookController.genreChangeListener}">
+                                <f:selectItems value="#{genresController.selectItems}"/>
+                                <f:ajax/>
+                            </h:selectOneMenu>
+                        </p>
+
                         <p><strong>#{mess.str_count}</strong>
                             <h:outputText value=" #{b.pageCount} #{mess.str}" rendered="#{!b.edit}"/>
                             <h:inputText value="#{bookController.bookPageCount}" style="width: 80%" rendered="#{b.edit}"/>
                             <h:outputText value=" #{mess.str}" rendered="#{b.edit}"/>
                         </p>
+
                         <p><strong>#{mess.publisher}</strong>
                             <h:outputText value=" #{b.publisher.name}" rendered="#{!b.edit}"/>
-                            <h:inputText value="#{bookController.publisher}" rendered="#{b.edit}"/>
+                            <h:selectOneMenu id="publisher" value="#{b.publisher}" rendered="#{b.edit}" converter="#{publisherController}" valueChangeListener="#{bookController.publisherChangeListener}">
+                                <f:selectItems value="#{publisherController.selectItems}"/>
+                                <f:ajax/>
+                            </h:selectOneMenu>
                         </p>
+
                         <p><strong>#{mess.year_pub}</strong>
                             <h:outputText value=" #{b.publishYear} #{mess.year}" rendered="#{!b.edit}"/>
                             <h:inputText value="#{bookController.publishYear}" style="width: 80%" rendered="#{b.edit}"/>
@@ -74,7 +88,7 @@
                         </p>
                         <h:panelGroup id ="admin_tools" rendered="#{request.isUserInRole('admins')}">
                             <p class="action">
-                                <h:commandLink action="#{bookController.editBook(b.id)}" rendered="#{!b.edit}">
+                                <h:commandLink action="#{bookController.editBook(b)}" rendered="#{!b.edit}">
                                     <h:graphicImage library="images" name="edit.png" width="18" height="18" rendered="#{!b.edit}"/>
                                     <h:outputText value=" #{mess.edit}"/>
                                     <f:ajax render="@form"/>
@@ -84,7 +98,7 @@
                                 <h:commandLink action="#{bookController.saveBook(b.id)}" rendered="#{b.edit}">
                                     <h:graphicImage library="images" name="save.png" width="18" height="18" rendered="#{b.edit}"/>
                                     <h:outputText value=" #{mess.save}"/>
-                                    <f:ajax execute="@form" render="@form"/>
+                                    <f:ajax execute="@form" render="@form :bookpager :bookcount"/>
                                 </h:commandLink>
                             </p>
                         </h:panelGroup>
@@ -105,10 +119,10 @@
                     <h:form  rendered="#{bookController.bookCount > bookController.bookOnPage}">
                         <h:outputText value="#{mess.pages}"/>
                         <ui:repeat value="#{bookController.pageCount}" var="page">
-                            <h:commandLink value="#{page}" action="#{bookController.fillBooks}" styleClass="#{page == bookController.selectedPage ? 'sel_page' : ''}">
-                                <f:param name="selected_page" value="#{page}"/>
-                            </h:commandLink>
-                        </ui:repeat>
+                        <h:commandLink value="#{page}" action="#{bookController.fillBooks}" styleClass="#{page == bookController.selectedPage ? 'sel_page' : ''}">
+                            <f:param name="selected_page" value="#{page}"/>
+                        </h:commandLink>
+                    </ui:repeat>
                     </h:form>
                 </f:ajax>
             </h:panelGrid>

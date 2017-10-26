@@ -160,6 +160,9 @@ a:visited {
 .col_2 input{
     width: 100%;
 }
+.col_2 select{
+    width: 100%;
+}
 .col_2 a.book_name {
     color: blue;
 }

@@ -20,16 +20,13 @@ public class ShowImage extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("image/jpeg");
-        OutputStream out = resp.getOutputStream();
-        try{
-            long id = Long.valueOf(req.getParameter("id"));
+        try (OutputStream out = resp.getOutputStream()) {
+            int id = Integer.valueOf(req.getParameter("id"));
             byte[] image = bookController.getImage(id);
             resp.setContentLength(image.length);
             out.write(image);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            out.close();
         }
     }
 

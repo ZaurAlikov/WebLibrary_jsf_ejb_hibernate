@@ -2,7 +2,6 @@ package ru.alikovzaur.library.entityes;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
 import java.sql.Date;

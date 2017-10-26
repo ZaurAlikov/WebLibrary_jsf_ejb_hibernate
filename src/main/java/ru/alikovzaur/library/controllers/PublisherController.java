@@ -1,6 +1,7 @@
 package ru.alikovzaur.library.controllers;
 
 import ru.alikovzaur.library.entityes.GenreEntity;
+import ru.alikovzaur.library.entityes.PublisherEntity;
 import ru.alikovzaur.library.interfaces.BookDAO;
 
 import javax.annotation.PostConstruct;
@@ -11,17 +12,16 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Named
 @ApplicationScoped
-public class GenresController implements Serializable, Converter {
+public class PublisherController implements Converter {
 
-    private int id;
-    private String name;
-    private List<GenreEntity> genresList;
-    private Map<String, GenreEntity> map;
+    private Map<String, PublisherEntity> map;
     private List<SelectItem> selectItems = new ArrayList<>();
 
     @EJB
@@ -31,33 +31,11 @@ public class GenresController implements Serializable, Converter {
     public void postConstruct() {
 
         map = new HashMap<>();
-        genresList = bookDao.getGenres();
 
-        for (GenreEntity genre : genresList) {
-            map.put(genre.getName(), genre);
-            selectItems.add(new SelectItem(genre, genre.getName()));
+        for (PublisherEntity publisher : bookDao.getPublishers()) {
+            map.put(publisher.getName(), publisher);
+            selectItems.add(new SelectItem(publisher, publisher.getName()));
         }
-
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String genre) {
-        this.name = genre;
-    }
-
-    public List<GenreEntity> getGenresList(){
-        return genresList;
     }
 
     public List<SelectItem> getSelectItems() {

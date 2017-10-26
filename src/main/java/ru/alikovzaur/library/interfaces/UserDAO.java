@@ -13,6 +13,6 @@ public interface UserDAO {
     List<UsersEntity> getAllUsers();
     UsersEntity getUserByLogin(String login);
     void createUser(UsersEntity usersEntity, GroupsEntity groupsEntity, AuthInfoEntity authInfoEntity) throws Exception;
-    GroupsEntity getGroup(String group);
+//    GroupsEntity getGroup(String group);
     SexTabEntity getSex(String sex);
 }

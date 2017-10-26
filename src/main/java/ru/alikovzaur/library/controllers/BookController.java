@@ -2,6 +2,7 @@ package ru.alikovzaur.library.controllers;
 
 import ru.alikovzaur.library.entityes.AuthorEntity;
 import ru.alikovzaur.library.entityes.BookEntity;
+import ru.alikovzaur.library.entityes.GenreEntity;
 import ru.alikovzaur.library.entityes.PublisherEntity;
 import ru.alikovzaur.library.interfaces.BookDAO;
 
@@ -11,7 +12,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
-import javax.xml.bind.ValidationEvent;
 import java.io.Serializable;
 import java.util.*;
 
@@ -21,6 +21,7 @@ public class BookController implements Serializable {
 
     private String bookName;
     private String author;
+    private String genre;
     private int bookPageCount;
     private String publisher;
     private int publishYear;
@@ -33,9 +34,9 @@ public class BookController implements Serializable {
     private ArrayList<Integer> pageCount;
     private String typeSearch;
     private Long genreId;
-    private int bookCount;
+    private long bookCount;
     private int selectedPage;
-    private HashMap<Integer, List<BookEntity>> booksMap;
+    private HashMap<Long, List<BookEntity>> booksMap;
 
     @EJB
     private BookDAO bookDao;
@@ -68,6 +69,14 @@ public class BookController implements Serializable {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public int getBookPageCount() {
@@ -142,11 +151,11 @@ public class BookController implements Serializable {
         this.pageCount = pageCount;
     }
 
-    public int getBookCount() {
+    public long getBookCount() {
         return bookCount;
     }
 
-    public void setBookCount(int bookCount) {
+    public void setBookCount(long bookCount) {
         this.bookCount = bookCount;
     }
 
@@ -167,7 +176,14 @@ public class BookController implements Serializable {
     }
 
     public byte[] getImage(long id){
-        return bookDao.getImage(id);
+//        return bookDao.getImage(id);
+        byte[] bytes = new byte[0];
+        for (BookEntity b : books) {
+            if (b.getId() == id){
+                bytes = b.getImage();
+            }
+        }
+        return bytes;
     }
 
     public byte[] getPdf(long id){
@@ -232,18 +248,15 @@ public class BookController implements Serializable {
         fillBooks();
     }
 
-    public void editBook(long id){
-        for (BookEntity b : books){
-            if (b.getId() == id){
+    public void editBook(BookEntity b){
                 b.setEdit(true);
                 bookName = b.getName();
                 author = b.getAuthor().getFio();
+                genre = b.getGenre().getName();
                 bookPageCount = b.getPageCount();
                 publisher = b.getPublisher().getName();
                 publishYear = b.getPublishYear();
                 isbn = b.getIsbn();
-            }
-        }
     }
 
     public void saveBook(long id){
@@ -254,6 +267,9 @@ public class BookController implements Serializable {
                 AuthorEntity authorEntity = b.getAuthor();
                 authorEntity.setFio(author);
                 b.setAuthor(authorEntity);
+                GenreEntity genreEntity = b.getGenre();
+                genreEntity.setName(genre);
+                b.setGenre(genreEntity);
                 b.setPageCount(bookPageCount);
                 PublisherEntity publisherEntity = b.getPublisher();
                 publisherEntity.setName(publisher);
@@ -261,7 +277,17 @@ public class BookController implements Serializable {
                 b.setPublishYear(publishYear);
                 b.setIsbn(isbn);
                 bookDao.updateBook(b);
+                fillBooks();
             }
         }
     }
+
+    public void genreChangeListener(ValueChangeEvent e){
+        genre = e.getNewValue().toString();
+    }
+
+    public void publisherChangeListener(ValueChangeEvent e){
+        publisher = e.getNewValue().toString();
+    }
+
 }

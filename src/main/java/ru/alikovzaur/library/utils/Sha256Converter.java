@@ -11,7 +11,7 @@ public class Sha256Converter implements Serializable {
         md.update(data.getBytes("UTF-8"));
         return bytesToHex(md.digest());
     }
-    public static String bytesToHex(byte[] bytes) {
+    private static String bytesToHex(byte[] bytes) {
         StringBuffer result = new StringBuffer();
         for (byte byt : bytes) result.append(Integer.toString((byt & 0xff) + 0x100, 16).substring(1));
         return result.toString();

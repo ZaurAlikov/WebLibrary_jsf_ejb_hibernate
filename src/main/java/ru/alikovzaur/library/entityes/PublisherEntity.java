@@ -1,8 +1,5 @@
 package ru.alikovzaur.library.entityes;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -34,13 +31,18 @@ public class PublisherEntity {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PublisherEntity that = (PublisherEntity) o;
+
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return (int) (id ^ (id >>> 32));
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "publisher")
@@ -50,5 +52,10 @@ public class PublisherEntity {
 
     public void setBookEntities(Set<BookEntity> bookEntities) {
         this.bookEntities = bookEntities;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

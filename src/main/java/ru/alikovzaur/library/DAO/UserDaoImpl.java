@@ -23,14 +23,14 @@ public class UserDaoImpl implements UserDAO {
     @Override
     @SuppressWarnings("unchecked")
     public List<UsersEntity> getAllUsers() {
-        Query query = entityManager.createQuery("SELECT user FROM UsersEntity user");
+        Query query = entityManager.createQuery("select user from UsersEntity user join fetch user.sex join fetch user.authInfo");
         return query.getResultList();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public UsersEntity getUserByLogin(String login) {
-        Query query = entityManager.createQuery("SELECT user FROM UsersEntity user WHERE user.username = :login");
+        Query query = entityManager.createQuery("select user from UsersEntity user join fetch user.sex join fetch user.authInfo where user.username = :login");
         query.setParameter("login", login);
         List<UsersEntity> usersEntities = query.getResultList();
         if (usersEntities.size() == 0){
@@ -46,16 +46,16 @@ public class UserDaoImpl implements UserDAO {
         entityManager.persist(usersEntity);
     }
 
-    @Override
-    public GroupsEntity getGroup(String group) {
-        GroupsEntity groupsEntity = null;
-        if (group.equals("admins")){
-            groupsEntity = entityManager.find(GroupsEntity.class, 1);
-        } else if (group.equals("users")){
-            groupsEntity = entityManager.find(GroupsEntity.class, 2);
-        }
-        return groupsEntity;
-    }
+//    @Override
+//    public GroupsEntity getGroup(String group) {
+//        GroupsEntity groupsEntity = null;
+//        if (group.equals("admins")){
+//            groupsEntity = entityManager.find(GroupsEntity.class, 1);
+//        } else if (group.equals("users")){
+//            groupsEntity = entityManager.find(GroupsEntity.class, 2);
+//        }
+//        return groupsEntity;
+//    }
 
     @Override
     public SexTabEntity getSex(String sex) {

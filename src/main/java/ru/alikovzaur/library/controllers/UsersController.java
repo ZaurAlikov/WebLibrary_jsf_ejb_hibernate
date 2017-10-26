@@ -4,7 +4,6 @@ import ru.alikovzaur.library.entityes.AuthInfoEntity;
 import ru.alikovzaur.library.entityes.GroupsEntity;
 import ru.alikovzaur.library.entityes.UsersEntity;
 import ru.alikovzaur.library.interfaces.UserDAO;
-import ru.alikovzaur.library.utils.Sha256Converter;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -37,7 +36,6 @@ public class UsersController implements Serializable {
     private String password;
     private List<GroupsEntity> group;
     private UIComponent loginField;
-//    private boolean loggedIn = false;
 
     @EJB
     private UserDAO userDao;
@@ -111,14 +109,6 @@ public class UsersController implements Serializable {
         this.group = group;
     }
 
-//    public boolean isLoggedIn() {
-//        return loggedIn;
-//    }
-//
-//    public void setLoggedIn(boolean loggedIn) {
-//        this.loggedIn = loggedIn;
-//    }
-
     public UIComponent getLoginField() {
         return loginField;
     }
@@ -126,29 +116,6 @@ public class UsersController implements Serializable {
     public void setLoginField(UIComponent loginField) {
         this.loginField = loginField;
     }
-
-
-//    public String checkPassword(){
-//        UsersEntity usersEntity = userDao.getUserByLogin(login);
-//        if(usersEntity == null){
-//            this.setLogin("");
-//            this.setPassword("");
-//            setErrorMessage("error_incorrect_login");
-//            return "index";
-//        } else if (usersEntity.getAuthInfo().getPassword().equals(password)){
-//            name = usersEntity.getName();
-//            surname = usersEntity.getSurname();
-//            birthday = usersEntity.getBirthday();
-//            email = usersEntity.getEmail();
-//            sex = usersEntity.getSex().getSex();
-//            group = usersEntity.getAuthInfo().getGroup();
-//            loggedIn = true;
-//            return "books";
-//        }
-//        this.setPassword("");
-//        setErrorMessage("error_incorrect_password");
-//        return "index";
-//    }
 
     public String loginEnter(){
         HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -203,7 +170,6 @@ public class UsersController implements Serializable {
         usersEntity.setAuthInfo(authInfoEntity);
 
         userDao.createUser(usersEntity, groupsEntity, authInfoEntity);
-//        loggedIn = true;
         return "index";
     }
 
@@ -222,14 +188,6 @@ public class UsersController implements Serializable {
     public String regCancel(){
         return "index?faces-redirect=true";
     }
-
-//    public void checkLogin(){
-//        if (!loggedIn){
-//            FacesContext context = FacesContext.getCurrentInstance();
-//            ConfigurableNavigationHandler handler = (ConfigurableNavigationHandler) context.getApplication().getNavigationHandler();
-//            handler.performNavigation("/index.xhtml?faces-redirect=true");
-//        }
-//    }
 
     private void setErrorMessage(String msg){
         FacesMessage message = new FacesMessage(res.getString(msg));
