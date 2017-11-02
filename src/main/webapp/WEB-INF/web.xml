@@ -10,6 +10,7 @@
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+
   <session-config>
     <session-timeout>60</session-timeout>
   </session-config>
@@ -35,6 +36,7 @@
       <form-error-page>/index.xhtml</form-error-page>
     </form-login-config>
   </login-config>
+
   <security-role>
     <role-name>admins</role-name>
   </security-role>
@@ -56,4 +58,9 @@
     </auth-constraint>
   </security-constraint>
 
+  <context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>library</param-value>
+  </context-param>
+  
 </web-app>

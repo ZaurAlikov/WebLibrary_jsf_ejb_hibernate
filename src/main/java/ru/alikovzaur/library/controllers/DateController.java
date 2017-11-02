@@ -1,10 +1,13 @@
 package ru.alikovzaur.library.controllers;
 
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 import ru.alikovzaur.library.enums.MonthEnum;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -16,6 +19,11 @@ import java.util.*;
 @Named
 @RequestScoped
 public class DateController implements Serializable {
+
+
+    private java.util.Date date;
+
+
     private String day = "01";
     private MonthEnum month = MonthEnum.Январь;
     private String year = "1980";
@@ -52,6 +60,15 @@ public class DateController implements Serializable {
         for (int i = 1920; i <= year; i+=4){
             leapYears.add(String.valueOf(i));
         }
+    }
+
+
+    public java.util.Date getDate() {
+        return date;
+    }
+
+    public void setDate(java.util.Date date) {
+        this.date = date;
     }
 
     public String getDay() {
@@ -92,17 +109,21 @@ public class DateController implements Serializable {
     }
 
     public Date getCurrentDate(){
-        int numMonth = month.ordinal()+1;
+//        int numMonth = month.ordinal()+1;
+//
+//        String strDate = year + "-" + String.format("%02d", numMonth) + "-" + String.format("%02d", Integer.valueOf(day));
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+//        Date dateSql = null;
+//        try {
+//            dateSql = new Date(format.parse(strDate).getTime());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
-        String strDate = year + "-" + String.format("%02d", numMonth) + "-" + String.format("%02d", Integer.valueOf(day));
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = null;
-        try {
-            date = new Date(format.parse(strDate).getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
+
+
+
+        return new Date(date.getTime());
     }
 
     private LinkedHashMap<String, Integer> daysOfMonth(){

@@ -37,7 +37,6 @@ public class GenresController implements Serializable, Converter {
             map.put(genre.getName(), genre);
             selectItems.add(new SelectItem(genre, genre.getName()));
         }
-
     }
 
     public int getId() {

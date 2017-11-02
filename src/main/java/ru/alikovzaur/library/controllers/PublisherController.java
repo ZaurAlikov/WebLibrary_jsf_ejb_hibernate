@@ -1,6 +1,5 @@
 package ru.alikovzaur.library.controllers;
 
-import ru.alikovzaur.library.entityes.GenreEntity;
 import ru.alikovzaur.library.entityes.PublisherEntity;
 import ru.alikovzaur.library.interfaces.BookDAO;
 

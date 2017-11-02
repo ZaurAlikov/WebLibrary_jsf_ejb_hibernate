@@ -4,46 +4,46 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>#{mess.title}</title>
-    <h:outputStylesheet library="css" name="main_style.css"/>
 </h:head>
 <h:body>
     <ui:composition>
         <div>
-            <h:graphicImage styleClass="logo" library="images" name="logo.png"/>
+            <p:graphicImage styleClass="logo" library="images" name="logo.png"/>
         </div>
         <div class="descr">
-            <h1>#{mess.header_title}</h1>
+            <h1><p:outputLabel value="#{mess.header_title}"/></h1>
         </div>
         <div class="welcome">
             <h:form>
-                <h:commandLink action="#{localeChanger.selectLanguage('ru')}">
-                    <h:graphicImage library="images" name="Russia.png"/>
-                </h:commandLink>
-                <h:commandLink action="#{localeChanger.selectLanguage('en')}">
-                    <h:graphicImage library="images" name="United_Kingdom.png"/>
-                </h:commandLink>
-                <p>#{mess.welcome_text}#{usersController.name}</p>
-                <p><h:commandLink action="#{usersController.exit}" value="#{mess.exit}"/></p>
+                <p:commandLink action="#{localeChanger.selectLanguage('ru')}">
+                    <p:graphicImage library="images" name="Russia.png"/>
+                </p:commandLink>
+                <p:commandLink action="#{localeChanger.selectLanguage('en')}">
+                    <p:graphicImage library="images" name="United_Kingdom.png"/>
+                </p:commandLink>
+                <p><p:outputLabel value="#{mess.welcome_text}#{usersController.name}"/></p>
+                <p><p:commandLink action="#{usersController.exit}" value="#{mess.exit}"/></p>
             </h:form>
         </div>
         <div class="search_div">
-            <f:ajax event="onclick" render=":bookgenres :booklist :bookcount :bookpager searchbook">
+
                 <h:form id="searchbook" styleClass="search_form">
-                    <h:inputText id="input_text" value="#{bookController.searchField}" styleClass="search_string">
-                        <f:ajax event="change"/>
-                    </h:inputText>
-                    <h:commandButton value="#{mess.search}" action="#{bookController.fillBooks}" styleClass="btn">
+                    <p:inputText id="input_text" value="#{bookController.searchField}" styleClass="search_string">
+                        <p:ajax event="change"/>
+                    </p:inputText>
+                    <p:commandButton value="#{mess.search}" action="#{bookController.fillBooks}" styleClass="btn" update=":bookgenres :bookform:booklist :bookcount :bookpager searchbook">
                         <f:param name="type_search" value="search"/>
-                    </h:commandButton>
-                    <h:selectOneMenu value="#{bookController.searchType}" styleClass="sel_menu">
+                    </p:commandButton>
+                    <p:selectOneMenu id="search_type" value="#{bookController.searchType}" styleClass="sel_menu">
                         <f:selectItems value="#{searchTypeController.searchTypeList}"/>
-                        <f:ajax event="change"/>
-                    </h:selectOneMenu>
+                        <p:ajax event="change"/>
+                    </p:selectOneMenu>
                 </h:form>
-            </f:ajax>
+
         </div>
     </ui:composition>
 </h:body>

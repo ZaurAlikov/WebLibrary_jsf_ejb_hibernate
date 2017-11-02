@@ -4,27 +4,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 <h:head>
     <title>#{mess.title}</title>
 </h:head>
 <h:body>
     <ui:composition template="/templates/library_template.xhtml">
         <ui:define name="content">
-            <div class="count_book">
-                <h:outputText id="bookcount" value="#{mess.find_books} #{bookController.bookCount}" styleClass="book_count"/>
+            <p:panelGrid columns="2" styleClass="count_book">
+                <p:outputLabel id="bookcount" value="#{mess.find_books} #{bookController.bookCount}" styleClass="book_count"/>
                 <h:form styleClass="book_on_page">
-                    <h:outputText value="#{mess.book_on_page}"/>
-                    <h:selectOneMenu value="#{bookController.bookOnPage}" valueChangeListener="#{bookController.booksPageChanged}">
-                        <f:selectItem itemValue="2"/>
-                        <f:selectItem itemValue="5"/>
-                        <f:selectItem itemValue="10"/>
-                        <f:selectItem itemValue="30"/>
-                        <f:selectItem itemValue="50"/>
+                    <p:outputLabel value="#{mess.book_on_page}" styleClass="label_text"/>
+                    <p:selectOneMenu value="#{bookController.bookOnPage}" valueChangeListener="#{bookController.booksPageChanged}">
+                        <f:selectItem itemValue="2" itemLabel="2"/>
+                        <f:selectItem itemValue="5" itemLabel="5"/>
+                        <f:selectItem itemValue="10" itemLabel="10"/>
+                        <f:selectItem itemValue="30" itemLabel="30"/>
+                        <f:selectItem itemValue="50" itemLabel="50"/>
                         <f:ajax event="change" render=":bookform:booklist :bookpager"/>
-                    </h:selectOneMenu>
+                    </p:selectOneMenu>
                 </h:form>
-            </div>
+            </p:panelGrid>
+
             <h:form id="bookform">
             <h:dataTable id="booklist" value="#{bookController.books}" var="b" cellspacing="10px" styleClass="main_table" columnClasses="col_1,col_2,col_3">
                 <h:column>
@@ -45,7 +47,6 @@
                             <h:outputText value=" #{b.author.fio}" rendered="#{!b.edit}"/>
                             <h:inputText value="#{bookController.author}" rendered="#{b.edit}"/>
                         </p>
-
                         <p><strong>#{mess.genre}</strong>
                             <h:outputText value=" #{b.genre.name}" rendered="#{!b.edit}"/>
                             <h:selectOneMenu id="genre" value="#{b.genre}" rendered="#{b.edit}" converter="#{genresController}" valueChangeListener="#{bookController.genreChangeListener}">
@@ -53,13 +54,11 @@
                                 <f:ajax/>
                             </h:selectOneMenu>
                         </p>
-
                         <p><strong>#{mess.str_count}</strong>
                             <h:outputText value=" #{b.pageCount} #{mess.str}" rendered="#{!b.edit}"/>
                             <h:inputText value="#{bookController.bookPageCount}" style="width: 80%" rendered="#{b.edit}"/>
                             <h:outputText value=" #{mess.str}" rendered="#{b.edit}"/>
                         </p>
-
                         <p><strong>#{mess.publisher}</strong>
                             <h:outputText value=" #{b.publisher.name}" rendered="#{!b.edit}"/>
                             <h:selectOneMenu id="publisher" value="#{b.publisher}" rendered="#{b.edit}" converter="#{publisherController}" valueChangeListener="#{bookController.publisherChangeListener}">
@@ -67,7 +66,6 @@
                                 <f:ajax/>
                             </h:selectOneMenu>
                         </p>
-
                         <p><strong>#{mess.year_pub}</strong>
                             <h:outputText value=" #{b.publishYear} #{mess.year}" rendered="#{!b.edit}"/>
                             <h:inputText value="#{bookController.publishYear}" style="width: 80%" rendered="#{b.edit}"/>

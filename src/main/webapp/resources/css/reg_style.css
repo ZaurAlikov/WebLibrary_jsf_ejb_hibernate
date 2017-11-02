@@ -18,6 +18,8 @@ h3,h5{
 .reg_title{
     text-align: center;
     font-style: italic;
+    font-weight: bold;
+    font-size: 1.2em;
 }
 .form{
     margin: 0 auto;
@@ -52,4 +54,7 @@ h3,h5{
 }
 .right_col{
     text-align: left;
+}
+.date_input input{
+    width: 141px;
 }
