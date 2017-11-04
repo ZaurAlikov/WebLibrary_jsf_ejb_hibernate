@@ -1,5 +1,6 @@
 package ru.alikovzaur.library.controllers;
 
+import org.primefaces.context.RequestContext;
 import ru.alikovzaur.library.entityes.AuthorEntity;
 import ru.alikovzaur.library.entityes.BookEntity;
 import ru.alikovzaur.library.entityes.GenreEntity;
@@ -37,6 +38,7 @@ public class BookController implements Serializable {
     private long bookCount;
     private int selectedPage;
     private HashMap<Long, List<BookEntity>> booksMap;
+    private BookEntity selectedBook;
 
     @EJB
     private BookDAO bookDao;
@@ -175,6 +177,14 @@ public class BookController implements Serializable {
         this.bookOnPage = bookOnPage;
     }
 
+    public BookEntity getSelectedBook() {
+        return selectedBook;
+    }
+
+    public void setSelectedBook(BookEntity selectedBook) {
+        this.selectedBook = selectedBook;
+    }
+
     public byte[] getImage(long id){
 //        return bookDao.getImage(id);
         byte[] bytes = new byte[0];
@@ -259,27 +269,9 @@ public class BookController implements Serializable {
                 isbn = b.getIsbn();
     }
 
-    public void saveBook(long id){
-        for (BookEntity b : books){
-            if (b.getId() == id){
-                b.setEdit(false);
-                b.setName(bookName);
-                AuthorEntity authorEntity = b.getAuthor();
-                authorEntity.setFio(author);
-                b.setAuthor(authorEntity);
-                GenreEntity genreEntity = b.getGenre();
-                genreEntity.setName(genre);
-                b.setGenre(genreEntity);
-                b.setPageCount(bookPageCount);
-                PublisherEntity publisherEntity = b.getPublisher();
-                publisherEntity.setName(publisher);
-                b.setPublisher(publisherEntity);
-                b.setPublishYear(publishYear);
-                b.setIsbn(isbn);
-                bookDao.updateBook(b);
-                fillBooks();
-            }
-        }
+    public void saveBook(){
+        bookDao.updateBook(selectedBook);
+        fillBooks();
     }
 
     public void genreChangeListener(ValueChangeEvent e){
