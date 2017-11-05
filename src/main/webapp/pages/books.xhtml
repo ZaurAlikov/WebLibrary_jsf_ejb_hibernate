@@ -12,51 +12,72 @@
 <h:body>
     <ui:composition template="/templates/library_template.xhtml">
         <ui:define name="content">
-
-            <p:dialog header="Редактировать книгу" widgetVar="edit_dlg" modal="true" resizable="false" dynamic="true" width="400">
+            <p:dialog header="#{mess.dlg_edit_header}" widgetVar="edit_dlg" modal="true" resizable="false" dynamic="true">
                 <h:form id="edit_form" >
-                    <p:panelGrid id="book_details" styleClass="edit_book_table" columnClasses="ed_col1, ed_col2" columns="2">
+                    <p:panelGrid id="book_details" styleClass="edit_book_table" >
+                        <p:row>
+                            <p:column styleClass="ed_col1"><strong>#{mess.bookname}</strong></p:column>
+                            <p:column styleClass="ed_col2"><p:inputText value="#{bookController.selectedBook.name}"/></p:column>
+                            <p:column styleClass="ed_col3"><strong>#{mess.description}</strong></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column styleClass="ed_col1"><strong>#{mess.author}</strong></p:column>
+                            <p:column styleClass="ed_col2"><p:inputText value="#{bookController.selectedBook.author.fio}"/></p:column>
+                            <p:column rowspan="7">
+                                <h:panelGroup>
+                                    <p:inputTextarea value="#{bookController.selectedBook.descr}" rows="15" cols="35" autoResize="false" counter="display" maxlength="1000" counterTemplate="#{mess.dlg_edit_char} {0}"/>
+                                    <br/><p:outputLabel id="display"/>
+                                </h:panelGroup>
 
-                        <strong>#{mess.bookname}</strong>
-                        <p:inputText value="#{bookController.selectedBook.name}"/>
-
-                        <strong>#{mess.author}</strong>
-                        <p:inputText value="#{bookController.selectedBook.author.fio}"/>
-
-                        <strong>#{mess.genre}</strong>
-                        <p:selectOneMenu id="genre" value="#{bookController.selectedBook.genre}" converter="#{genresController}" valueChangeListener="#{bookController.genreChangeListener}">
-                            <f:selectItems value="#{genresController.selectItems}"/>
-                            <f:ajax/>
-                        </p:selectOneMenu>
-
-                        <strong>#{mess.str_count}</strong>
-                        <h:panelGroup>
-                            <p:inputText value="#{bookController.selectedBook.pageCount}" styleClass="ed_txt_fld"/>
-                            <p:outputLabel value=" #{mess.str}"/>
-                        </h:panelGroup>
-
-                        <strong>#{mess.publisher}</strong>
-                        <p:selectOneMenu id="publisher" value="#{bookController.selectedBook.publisher}" converter="#{publisherController}" valueChangeListener="#{bookController.publisherChangeListener}">
-                            <f:selectItems value="#{publisherController.selectItems}"/>
-                            <f:ajax/>
-                        </p:selectOneMenu>
-
-                        <strong>#{mess.year_pub}</strong>
-                        <h:panelGroup>
-                            <p:inputText value="#{bookController.selectedBook.publishYear}" styleClass="ed_txt_fld"/>
-                            <p:outputLabel value=" #{mess.year}"/>
-                        </h:panelGroup>
-
-                        <strong>#{mess.ISBN}</strong>
-                        <p:inputText value="#{bookController.selectedBook.isbn}"/>
-
-                        <p:commandButton id="save_btn" value="#{mess.save}" action="#{bookController.saveBook}" update=":edit_form :bookform:booklist :bookpager :bookcount" oncomplete="PF('edit_dlg').hide();" onclick="this.disabled=true;"/>
-                        <p:commandButton id="cancel_btn" value="#{mess.registration_cancel}" oncomplete="PF('edit_dlg').hide();" immediate="true"/>
-
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column styleClass="ed_col1"><strong>#{mess.genre}</strong></p:column>
+                            <p:column styleClass="ed_col2">
+                                <p:selectOneMenu id="genre" value="#{bookController.selectedBook.genre}" converter="#{genresController}" valueChangeListener="#{bookController.genreChangeListener}">
+                                <f:selectItems value="#{genresController.selectItems}"/>
+                                <f:ajax/>
+                            </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column styleClass="ed_col1"><strong>#{mess.str_count}</strong></p:column>
+                            <p:column styleClass="ed_col2">
+                                <h:panelGroup>
+                                    <p:inputText value="#{bookController.selectedBook.pageCount}" styleClass="ed_txt_fld"/>
+                                    <p:outputLabel value=" #{mess.str}"/>
+                                </h:panelGroup>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column styleClass="ed_col1"><strong>#{mess.publisher}</strong></p:column>
+                            <p:column styleClass="ed_col2">
+                                <p:selectOneMenu id="publisher" value="#{bookController.selectedBook.publisher}" converter="#{publisherController}" valueChangeListener="#{bookController.publisherChangeListener}">
+                                    <f:selectItems value="#{publisherController.selectItems}"/>
+                                    <f:ajax/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column styleClass="ed_col1"><strong>#{mess.year_pub}</strong></p:column>
+                            <p:column styleClass="ed_col2">
+                                <h:panelGroup>
+                                    <p:inputText value="#{bookController.selectedBook.publishYear}" styleClass="ed_txt_fld"/>
+                                    <p:outputLabel value=" #{mess.year}"/>
+                                </h:panelGroup>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column styleClass="ed_col1"><strong>#{mess.ISBN}</strong></p:column>
+                            <p:column styleClass="ed_col2"><p:inputText value="#{bookController.selectedBook.isbn}"/></p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column styleClass="ed_col1"><p:commandButton id="save_btn" value="#{mess.save}" action="#{bookController.saveBook}" update=":edit_form :bookform:booklist :bookpager :bookcount" oncomplete="PF('edit_dlg').hide();" onclick="this.disabled=true;"/></p:column>
+                            <p:column styleClass="ed_col2"><p:commandButton id="cancel_btn" value="#{mess.registration_cancel}" oncomplete="PF('edit_dlg').hide();" immediate="true"/></p:column>
+                        </p:row>
                     </p:panelGrid>
                 </h:form>
             </p:dialog>
-
             <p:panelGrid columns="2" styleClass="count_book">
                 <p:outputLabel id="bookcount" value="#{mess.find_books} #{bookController.bookCount}" styleClass="book_count"/>
                 <h:form styleClass="book_on_page">
@@ -82,64 +103,53 @@
                 <p:column styleClass="col_2">
                     <div>
                         <p class="p_book_name">
-                            <p:outputLabel value=" #{mess.bookname}" rendered="#{b.edit}"/>
-                            <h:outputLink value="#{request.contextPath}/ShowPdfFile" styleClass="book_name" target="_blank" rendered="#{!b.edit}">
+                            <h:outputLink value="#{request.contextPath}/ShowPdfFile" styleClass="book_name" target="_blank">
                                 <p:outputLabel value=" #{b.name}"/>
                                 <f:param name="id" value="#{b.id}"/>
                                 <f:param name="action" value="read"/>
                             </h:outputLink>
-                            <p:inputText value="#{bookController.bookName}" rendered="#{b.edit}"/>
                         </p>
                         <p><strong>#{mess.author}</strong>
-                            <p:outputLabel value=" #{b.author.fio}" rendered="#{!b.edit}"/>
-                            <p:inputText value="#{bookController.author}" rendered="#{b.edit}"/>
+                            <p:outputLabel value=" #{b.author.fio}"/>
                         </p>
                         <p><strong>#{mess.genre}</strong>
-                            <p:outputLabel value=" #{b.genre.name}" rendered="#{!b.edit}"/>
-                            <p:selectOneMenu id="genre1" value="#{b.genre}" rendered="#{b.edit}" converter="#{genresController}" valueChangeListener="#{bookController.genreChangeListener}">
-                                <f:selectItems value="#{genresController.selectItems}"/>
-                                <f:ajax/>
-                            </p:selectOneMenu>
+                            <p:outputLabel value=" #{b.genre.name}"/>
                         </p>
                         <p><strong>#{mess.str_count}</strong>
-                            <p:outputLabel value=" #{b.pageCount} #{mess.str}" rendered="#{!b.edit}"/>
-                            <p:inputText value="#{bookController.bookPageCount}" style="width: 80%" rendered="#{b.edit}"/>
-                            <p:outputLabel value=" #{mess.str}" rendered="#{b.edit}"/>
+                            <p:outputLabel value=" #{b.pageCount} #{mess.str}"/>
                         </p>
                         <p><strong>#{mess.publisher}</strong>
-                            <p:outputLabel value=" #{b.publisher.name}" rendered="#{!b.edit}"/>
-                            <p:selectOneMenu id="publisher1" value="#{b.publisher}" rendered="#{b.edit}" converter="#{publisherController}" valueChangeListener="#{bookController.publisherChangeListener}">
-                                <f:selectItems value="#{publisherController.selectItems}"/>
-                                <f:ajax/>
-                            </p:selectOneMenu>
+                            <p:outputLabel value=" #{b.publisher.name}"/>
                         </p>
                         <p><strong>#{mess.year_pub}</strong>
-                            <p:outputLabel value=" #{b.publishYear} #{mess.year}" rendered="#{!b.edit}"/>
-                            <p:inputText value="#{bookController.publishYear}" style="width: 80%" rendered="#{b.edit}"/>
-                            <p:outputLabel value=" #{mess.year}" rendered="#{b.edit}"/>
+                            <p:outputLabel value=" #{b.publishYear} #{mess.year}"/>
                         </p>
                         <p><strong>#{mess.ISBN}</strong>
-                            <p:outputLabel value=" #{b.isbn}" rendered="#{!b.edit}"/>
-                            <p:inputText value="#{bookController.isbn}" rendered="#{b.edit}"/>
+                            <p:outputLabel value=" #{b.isbn}"/>
                         </p>
                         <p class="action">
-                            <h:outputLink value="#{request.contextPath}/ShowPdfFile" target="_blank" rendered="#{!b.edit}">
-                                <p:graphicImage library="images" name="down.png" width="25" height="25" rendered="#{!b.edit}"/>
-                                <p:outputLabel value=" #{mess.download}"/>
+                            <h:outputLink value="#{request.contextPath}/ShowPdfFile" target="_blank">
+                                <p:graphicImage library="images" title="#{mess.download}" name="down.png" width="25" height="25"/>
+                                <p:outputLabel value=" #{mess.download}" rendered="#{not request.isUserInRole('admins')}"/>
                                 <f:param name="id" value="#{b.id}"/>
                                 <f:param name="name" value="#{b.name}"/>
                                 <f:param name="action" value="download"/>
                             </h:outputLink>
                         </p>
-                        <p:panelGrid id ="admin_tools1" rendered="#{request.isUserInRole('admins')}">
+
                             <p class="action">
-                                <p:commandLink oncomplete="PF('edit_dlg').show();" title="#{mess.edit}" update=":edit_form:book_details">
+                                <p:commandLink oncomplete="PF('edit_dlg').show();" title="#{mess.edit}" update=":edit_form:book_details" rendered="#{request.isUserInRole('admins')}">
                                     <p:graphicImage library="images" name="edit.png" width="18" height="18"/>
                                     <f:setPropertyActionListener value="#{b}" target="#{bookController.selectedBook}"/>
                                 </p:commandLink>
                             </p>
+                            <p class="action">
+                                <p:commandLink oncomplete="PF('dlg_del_book').show();" title="#{mess.delete}" type="button" rendered="#{request.isUserInRole('admins')}">
+                                    <p:graphicImage library="images" name="del.png" width="18" height="18"/>
+                                    <f:setPropertyActionListener value="#{b}" target="#{bookController.selectedBook}"/>
+                                </p:commandLink>
+                            </p>
 
-                        </p:panelGrid>
                     </div>
                 </p:column>
                 <p:column styleClass="col_3">
@@ -151,6 +161,12 @@
                     </div>
                 </p:column>
             </p:dataTable>
+            <p:confirmDialog header="#{mess.dlg_del_header}" widgetVar="dlg_del_book" message="#{mess.dlg_del_mess}" styleClass="dlg_del">
+                <p:panelGrid style="margin: 0 auto; width: 150px" columns="2">
+                    <p:commandButton id ="btn_del_book" value="#{mess.dlg_del_yes}" oncomplete="PF('dlg_del_book').hide();" update=":bookform:booklist :bookpager :bookcount" action="#{bookController.delBook}"/>
+                    <p:commandButton value="#{mess.dlg_del_no}" oncomplete="PF('dlg_del_book').hide();"/>
+                </p:panelGrid>
+            </p:confirmDialog>
             </h:form>
             <p:panelGrid id="bookpager" styleClass="pager" columns="1">
                 <h:form  rendered="#{bookController.bookCount > bookController.bookOnPage}">

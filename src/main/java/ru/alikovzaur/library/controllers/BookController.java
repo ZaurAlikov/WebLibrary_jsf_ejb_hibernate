@@ -274,6 +274,11 @@ public class BookController implements Serializable {
         fillBooks();
     }
 
+    public void delBook(){
+        bookDao.delBook(selectedBook);
+        fillBooks();
+    }
+
     public void genreChangeListener(ValueChangeEvent e){
         genre = e.getNewValue().toString();
     }

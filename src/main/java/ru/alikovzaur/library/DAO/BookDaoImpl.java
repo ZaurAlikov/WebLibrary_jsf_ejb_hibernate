@@ -87,6 +87,11 @@ public class BookDaoImpl implements BookDAO, Serializable {
     }
 
     @Override
+    public void delBook(BookEntity book) {
+        entityManager.remove(entityManager.merge(book));
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public List<GenreEntity> getGenres() {
         Query query = entityManager.createQuery("select genres from GenreEntity genres order by name");

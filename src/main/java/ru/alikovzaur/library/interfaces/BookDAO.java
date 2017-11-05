@@ -14,6 +14,8 @@ public interface BookDAO {
 
     void updateBook(BookEntity book);
 
+    void delBook(BookEntity book);
+
     byte[] getImage(long id);
 
     byte[] getPdf(long id);

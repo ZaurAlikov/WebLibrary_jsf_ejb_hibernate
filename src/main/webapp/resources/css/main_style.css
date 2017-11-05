@@ -218,7 +218,13 @@ a:visited {
     font-size: 11.5px;
     text-align: left;
     margin-bottom: 5px;
-    margin-top: 5px;
+    margin-top: 2px;
+}
+.action {
+    float: left;
+}
+.col_2 img{
+    margin-left: 5px;
 }
 .col_2 p.p_book_name{
     margin-bottom: 15px;
@@ -250,6 +256,14 @@ a:hover.book_name{
 }
 .ui-panelgrid-cell.ed_col1{
     text-align: right;
+    font-size: 13px;
+}
+.ui-panelgrid-cell.ed_col3{
+    text-align: left;
+    font-size: 13px;
+}
+.edit_book_table .ui-widget{
+    font-size: 13px;
 }
 .pager{
     font-size: 13px;
