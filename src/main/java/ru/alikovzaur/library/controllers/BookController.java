@@ -200,16 +200,13 @@ public class BookController implements Serializable {
         return bookDao.getPdf(id);
     }
 
-    public void fillBooks(){
-        selectedPage = 1;
+    public  void fillBooks(int selPage){
+        selectedPage = selPage;
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
         if (params.size() > 0){
             if(params.get("type_search") != null){
                 typeSearch = params.get("type_search");
-            }
-            if (params.get("selected_page") != null){
-                selectedPage = Integer.valueOf(params.get("selected_page"));
             }
             if (params.get("genre_id") != null){
                 genreId = Long.valueOf(params.get("genre_id"));
@@ -238,6 +235,13 @@ public class BookController implements Serializable {
             }
         }
         createPages();
+        if(books.size() == 0 && selectedPage > 1){
+            fillBooks(selectedPage - 1);
+        }
+    }
+
+    public void fillBooks(){
+        fillBooks(1);
     }
 
     private void createPages(){
@@ -271,12 +275,12 @@ public class BookController implements Serializable {
 
     public void saveBook(){
         bookDao.updateBook(selectedBook);
-        fillBooks();
+        fillBooks(selectedPage);
     }
 
     public void delBook(){
         bookDao.delBook(selectedBook);
-        fillBooks();
+        fillBooks(selectedPage);
     }
 
     public void genreChangeListener(ValueChangeEvent e){

@@ -88,7 +88,7 @@
                         <f:selectItem itemValue="10" itemLabel="10"/>
                         <f:selectItem itemValue="30" itemLabel="30"/>
                         <f:selectItem itemValue="50" itemLabel="50"/>
-                        <f:ajax event="change" render=":bookform:booklist :bookpager"/>
+                        <p:ajax update="@form :bookform:booklist :bookpager"/>
                     </p:selectOneMenu>
                 </h:form>
             </p:panelGrid>
@@ -136,20 +136,18 @@
                                 <f:param name="action" value="download"/>
                             </h:outputLink>
                         </p>
-
-                            <p class="action">
-                                <p:commandLink oncomplete="PF('edit_dlg').show();" title="#{mess.edit}" update=":edit_form:book_details" rendered="#{request.isUserInRole('admins')}">
-                                    <p:graphicImage library="images" name="edit.png" width="18" height="18"/>
-                                    <f:setPropertyActionListener value="#{b}" target="#{bookController.selectedBook}"/>
-                                </p:commandLink>
-                            </p>
-                            <p class="action">
-                                <p:commandLink oncomplete="PF('dlg_del_book').show();" title="#{mess.delete}" type="button" rendered="#{request.isUserInRole('admins')}">
-                                    <p:graphicImage library="images" name="del.png" width="18" height="18"/>
-                                    <f:setPropertyActionListener value="#{b}" target="#{bookController.selectedBook}"/>
-                                </p:commandLink>
-                            </p>
-
+                        <p class="action">
+                            <p:commandLink oncomplete="PF('edit_dlg').show();" title="#{mess.edit}" update=":edit_form:book_details" rendered="#{request.isUserInRole('admins')}">
+                                <p:graphicImage library="images" name="edit.png" width="18" height="18"/>
+                                <f:setPropertyActionListener value="#{b}" target="#{bookController.selectedBook}"/>
+                            </p:commandLink>
+                        </p>
+                        <p class="action">
+                            <p:commandLink oncomplete="PF('dlg_del_book').show();" title="#{mess.delete}" type="button" rendered="#{request.isUserInRole('admins')}">
+                                <p:graphicImage library="images" name="del.png" width="18" height="18"/>
+                                <f:setPropertyActionListener value="#{b}" target="#{bookController.selectedBook}"/>
+                            </p:commandLink>
+                        </p>
                     </div>
                 </p:column>
                 <p:column styleClass="col_3">
@@ -169,12 +167,10 @@
             </p:confirmDialog>
             </h:form>
             <p:panelGrid id="bookpager" styleClass="pager" columns="1">
-                <h:form  rendered="#{bookController.bookCount > bookController.bookOnPage}">
+                <h:form rendered="#{bookController.bookCount > bookController.bookOnPage}">
                     <p:outputLabel value="#{mess.pages}"/>
                     <ui:repeat value="#{bookController.pageCount}" var="page">
-                        <p:commandLink value="#{page}" action="#{bookController.fillBooks}" update=":bookgenres :bookform:booklist :bookcount bookpager :searchbook" styleClass="#{page == bookController.selectedPage ? 'sel_page' : ''}">
-                            <f:param name="selected_page" value="#{page}"/>
-                        </p:commandLink>
+                        <p:commandLink value="#{page}" action="#{bookController.fillBooks(page)}" update=":bookgenres :bookform:booklist :bookcount bookpager :searchbook" styleClass="#{page == bookController.selectedPage ? 'sel_page' : ''}"/>
                     </ui:repeat>
                 </h:form>
             </p:panelGrid>
