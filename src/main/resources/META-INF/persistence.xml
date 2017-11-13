@@ -16,6 +16,7 @@
         <class>ru.alikovzaur.library.entityes.GroupsEntity</class>
         <class>ru.alikovzaur.library.entityes.AuthInfoEntity</class>
         <class>ru.alikovzaur.library.entityes.RolesEntity</class>
+        <class>ru.alikovzaur.library.entityes.RatingEntity</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
@@ -23,6 +24,9 @@
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/library"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <!--<property name="hibernate.connection.datasource" value="java:/mysqlDS" />-->
+            <!--<property name="hibernate.connection.username" value="root"/>-->
+            <!--<property name="hibernate.connection.password" value="root"/>-->
         </properties>
     </persistence-unit>
 </persistence>

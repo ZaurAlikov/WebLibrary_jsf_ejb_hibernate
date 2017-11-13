@@ -47,12 +47,17 @@ public class AuthorEntity {
 
     @Override
     public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj);
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        AuthorEntity that = (AuthorEntity) obj;
+
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
+        return (int) (id ^ (id >>> 32));
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
@@ -64,5 +69,9 @@ public class AuthorEntity {
         this.bookEntities = bookEntities;
     }
 
+    @Override
+    public String toString() {
+        return fio;
+    }
 }
 

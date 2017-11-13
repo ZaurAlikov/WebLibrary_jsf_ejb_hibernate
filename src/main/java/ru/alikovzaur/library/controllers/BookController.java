@@ -1,10 +1,7 @@
 package ru.alikovzaur.library.controllers;
 
-import org.primefaces.context.RequestContext;
-import ru.alikovzaur.library.entityes.AuthorEntity;
-import ru.alikovzaur.library.entityes.BookEntity;
-import ru.alikovzaur.library.entityes.GenreEntity;
-import ru.alikovzaur.library.entityes.PublisherEntity;
+import org.primefaces.event.FileUploadEvent;
+import ru.alikovzaur.library.entityes.*;
 import ru.alikovzaur.library.interfaces.BookDAO;
 
 import javax.annotation.PostConstruct;
@@ -13,6 +10,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.*;
 
@@ -20,13 +18,6 @@ import java.util.*;
 @SessionScoped
 public class BookController implements Serializable {
 
-    private String bookName;
-    private String author;
-    private String genre;
-    private int bookPageCount;
-    private String publisher;
-    private int publishYear;
-    private String isbn;
     private Long selectedGenre;
     private String searchType;
     private String searchField;
@@ -37,8 +28,12 @@ public class BookController implements Serializable {
     private Long genreId;
     private long bookCount;
     private int selectedPage;
-    private HashMap<Long, List<BookEntity>> booksMap;
+    private HashMap<Integer, Object> booksMap;
     private BookEntity selectedBook;
+    private List<Long> listId;
+    private boolean contentIsEdited;
+    private boolean imageIsEdited;
+    private String bookFlag;
 
     @EJB
     private BookDAO bookDao;
@@ -55,62 +50,8 @@ public class BookController implements Serializable {
         this.typeSearch = "all";
         this.genreId = -1L;
         this.fillBooks();
-    }
-
-    public String getBookName() {
-        return bookName;
-    }
-
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public int getBookPageCount() {
-        return bookPageCount;
-    }
-
-    public void setBookPageCount(int bookPageCount) {
-        this.bookPageCount = bookPageCount;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public int getPublishYear() {
-        return publishYear;
-    }
-
-    public void setPublishYear(int publishYear) {
-        this.publishYear = publishYear;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+        this.contentIsEdited = false;
+        this.imageIsEdited = false;
     }
 
     public String getSearchType() {
@@ -185,6 +126,14 @@ public class BookController implements Serializable {
         this.selectedBook = selectedBook;
     }
 
+    public String getBookFlag() {
+        return bookFlag;
+    }
+
+    public void setBookFlag(String bookFlag) {
+        this.bookFlag = bookFlag;
+    }
+
     public byte[] getImage(long id){
 //        return bookDao.getImage(id);
         byte[] bytes = new byte[0];
@@ -200,6 +149,7 @@ public class BookController implements Serializable {
         return bookDao.getPdf(id);
     }
 
+    @SuppressWarnings("unchecked")
     public  void fillBooks(int selPage){
         selectedPage = selPage;
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -216,8 +166,9 @@ public class BookController implements Serializable {
         int firstResult = selectedPage * bookOnPage - bookOnPage;
         booksMap.clear();
         booksMap = bookDao.getBooks(typeSearch, searchType, searchField, selectedPage, genreId, bookOnPage, firstResult);
-        books = booksMap.values().iterator().next();
-        bookCount = booksMap.keySet().iterator().next();
+        books = (List<BookEntity>) booksMap.get(1);
+        bookCount = (long) booksMap.get(2);
+        listId = (List<Long>) booksMap.get(3);
         switch (typeSearch) {
             case "all": {
                 setSearchField("");
@@ -262,20 +213,24 @@ public class BookController implements Serializable {
         fillBooks();
     }
 
-    public void editBook(BookEntity b){
-                b.setEdit(true);
-                bookName = b.getName();
-                author = b.getAuthor().getFio();
-                genre = b.getGenre().getName();
-                bookPageCount = b.getPageCount();
-                publisher = b.getPublisher().getName();
-                publishYear = b.getPublishYear();
-                isbn = b.getIsbn();
+    public void saveBook(){
+        if(bookFlag.equals("edit")){
+            bookDao.updateBook(selectedBook, contentIsEdited, imageIsEdited);
+            contentIsEdited = false;
+            imageIsEdited = false;
+        }
+        if(bookFlag.equals("add")){
+            bookDao.addBook(selectedBook);
+        }
+        fillBooks(selectedPage);
     }
 
-    public void saveBook(){
-        bookDao.updateBook(selectedBook);
-        fillBooks(selectedPage);
+    public void addNewBook(){
+        selectedBook = new BookEntity();
+    }
+
+    public void dropSelBook(){
+        selectedBook = null;
     }
 
     public void delBook(){
@@ -283,12 +238,40 @@ public class BookController implements Serializable {
         fillBooks(selectedPage);
     }
 
-    public void genreChangeListener(ValueChangeEvent e){
-        genre = e.getNewValue().toString();
+    public void setRating(ValueChangeEvent e){
+        HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String username = httpServletRequest.getRemoteUser();
+        int rating = (int) e.getNewValue();
+        RatingEntity ratingEntity = new RatingEntity();
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        long id = 0;
+        if (params.size() > 0){
+            if(params.get("id") != null){
+                id = Long.valueOf(params.get("id"));
+            }
+        }
+        ratingEntity.setBookId(id);
+        ratingEntity.setUsername(username);
+        ratingEntity.setRating(rating);
+        bookDao.setBookRating(ratingEntity);
+        fillBooks(selectedPage);
     }
 
-    public void publisherChangeListener(ValueChangeEvent e){
-        publisher = e.getNewValue().toString();
+    @SuppressWarnings("unchecked")
+    public boolean getReadOnly(long book_id){
+        int count = (int) listId.stream().filter(b -> b == book_id).count();
+        return count != 0;
     }
 
+    public void handleFileUpload(FileUploadEvent event) {
+        String id = event.getComponent().getId();
+        if(id.equals("image")){
+            selectedBook.setImage(event.getFile().getContents());
+            imageIsEdited = true;
+        }
+        if(id.equals("pdf")){
+            selectedBook.setContent(event.getFile().getContents());
+            contentIsEdited = true;
+        }
+    }
 }

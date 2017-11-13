@@ -204,4 +204,11 @@ public class UsersController implements Serializable {
         loginField = (UIComponent) e.getSource();
     }
 
+    public String goHome(){
+        return "/index.xhtml?faces-redirect=true";
+    }
+
+    public String goBooks(){
+        return "error";
+    }
 }

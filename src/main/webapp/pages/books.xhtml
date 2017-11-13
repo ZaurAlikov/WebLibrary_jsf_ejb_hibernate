@@ -14,29 +14,37 @@
         <ui:define name="content">
             <p:dialog header="#{mess.dlg_edit_header}" widgetVar="edit_dlg" modal="true" resizable="false" dynamic="true">
                 <h:form id="edit_form" >
-                    <p:panelGrid id="book_details" styleClass="edit_book_table" >
+                    <p:panelGrid styleClass="edit_book_table" >
                         <p:row>
+                            <p:column rowspan="7">
+                                <p:graphicImage id="img" value="/ShowImage?id=#{bookController.selectedBook.id}" width="180" height="240"/>
+                            </p:column>
                             <p:column styleClass="ed_col1"><strong>#{mess.bookname}</strong></p:column>
                             <p:column styleClass="ed_col2"><p:inputText value="#{bookController.selectedBook.name}"/></p:column>
                             <p:column styleClass="ed_col3"><strong>#{mess.description}</strong></p:column>
                         </p:row>
                         <p:row>
                             <p:column styleClass="ed_col1"><strong>#{mess.author}</strong></p:column>
-                            <p:column styleClass="ed_col2"><p:inputText value="#{bookController.selectedBook.author.fio}"/></p:column>
+                            <p:column styleClass="ed_col2">
+                                <p:selectOneMenu id="author" value="#{bookController.selectedBook.author}" converter="#{authorController}">
+                                    <f:selectItems value="#{authorController.selectItems}"/>
+                                    <f:ajax/>
+                                </p:selectOneMenu>
+                            </p:column>
+
                             <p:column rowspan="7">
                                 <h:panelGroup>
                                     <p:inputTextarea value="#{bookController.selectedBook.descr}" rows="15" cols="35" autoResize="false" counter="display" maxlength="1000" counterTemplate="#{mess.dlg_edit_char} {0}"/>
                                     <br/><p:outputLabel id="display"/>
                                 </h:panelGroup>
-
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column styleClass="ed_col1"><strong>#{mess.genre}</strong></p:column>
                             <p:column styleClass="ed_col2">
-                                <p:selectOneMenu id="genre" value="#{bookController.selectedBook.genre}" converter="#{genresController}" valueChangeListener="#{bookController.genreChangeListener}">
-                                <f:selectItems value="#{genresController.selectItems}"/>
-                                <f:ajax/>
+                                <p:selectOneMenu id="genre" value="#{bookController.selectedBook.genre}" converter="#{genresController}">
+                                    <f:selectItems value="#{genresController.selectItems}"/>
+                                    <f:ajax/>
                             </p:selectOneMenu>
                             </p:column>
                         </p:row>
@@ -52,7 +60,7 @@
                         <p:row>
                             <p:column styleClass="ed_col1"><strong>#{mess.publisher}</strong></p:column>
                             <p:column styleClass="ed_col2">
-                                <p:selectOneMenu id="publisher" value="#{bookController.selectedBook.publisher}" converter="#{publisherController}" valueChangeListener="#{bookController.publisherChangeListener}">
+                                <p:selectOneMenu id="publisher" value="#{bookController.selectedBook.publisher}" converter="#{publisherController}">
                                     <f:selectItems value="#{publisherController.selectItems}"/>
                                     <f:ajax/>
                                 </p:selectOneMenu>
@@ -72,14 +80,33 @@
                             <p:column styleClass="ed_col2"><p:inputText value="#{bookController.selectedBook.isbn}"/></p:column>
                         </p:row>
                         <p:row>
-                            <p:column styleClass="ed_col1"><p:commandButton id="save_btn" value="#{mess.save}" action="#{bookController.saveBook}" update=":edit_form :bookform:booklist :bookpager :bookcount" oncomplete="PF('edit_dlg').hide();" onclick="this.disabled=true;"/></p:column>
-                            <p:column styleClass="ed_col2"><p:commandButton id="cancel_btn" value="#{mess.registration_cancel}" oncomplete="PF('edit_dlg').hide();" immediate="true"/></p:column>
+                            <p:column styleClass="img_col">
+                                <h:form enctype="multipart/form-data">
+                                    <p:fileUpload id="image" styleClass="upload_btn" label="#{mess.dlg_edit_img}" messageTemplate="{name}" invalidFileMessage="#{mess.invalid_file_format}" update="@form" fileUploadListener="#{bookController.handleFileUpload}" auto="true" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" multiple="false" showButtons="false"/>
+                                </h:form>
+                            </p:column>
+                            <p:column colspan="2" styleClass="ed_col_pdf">
+                                <h:form enctype="multipart/form-data">
+                                    <p:fileUpload id="pdf" styleClass="upload_btn" label="#{mess.dlg_edit_pdf}" messageTemplate="{name}" invalidFileMessage="#{mess.invalid_file_format}" update="@form" fileUploadListener="#{bookController.handleFileUpload}" auto="true" allowTypes="/(\.|\/)(pdf)$/" multiple="false" showButtons="false"/>
+                                </h:form>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="4" styleClass="ed_col_save">
+                                <p:commandButton id="save_btn" value="#{mess.save}" action="#{bookController.saveBook}" update=":edit_form :bookform:booklist :bookpager :bookcount" oncomplete="PF('edit_dlg').hide();" onclick="this.disabled=true;"/>
+                                <p:commandButton id="cancel_btn" value="#{mess.registration_cancel}" action="#{bookController.dropSelBook}" oncomplete="PF('edit_dlg').hide();" immediate="true"/>
+                            </p:column>
                         </p:row>
                     </p:panelGrid>
                 </h:form>
             </p:dialog>
             <p:panelGrid columns="2" styleClass="count_book">
-                <p:outputLabel id="bookcount" value="#{mess.find_books} #{bookController.bookCount}" styleClass="book_count"/>
+                <h:panelGroup>
+                    <p:outputLabel id="bookcount" value="#{mess.find_books} #{bookController.bookCount}" styleClass="book_count"/>
+                    <p:commandButton id="add_btn" value="#{mess.add_book}" action="#{bookController.addNewBook}" oncomplete="PF('edit_dlg').show();" update=":edit_form" rendered="#{request.isUserInRole('admins')}">
+                        <f:setPropertyActionListener value="add" target="#{bookController.bookFlag}"/>
+                    </p:commandButton>
+                </h:panelGroup>
                 <h:form styleClass="book_on_page">
                     <p:outputLabel value="#{mess.book_on_page}" styleClass="label_text"/>
                     <p:selectOneMenu value="#{bookController.bookOnPage}" valueChangeListener="#{bookController.booksPageChanged}">
@@ -99,6 +126,11 @@
                 </f:facet>
                 <p:column styleClass="col_1">
                     <p:graphicImage value="/ShowImage?id=#{b.id}" width="120" height="160"/>
+                    <p:rating cancel="false" id="rating" value="#{b.rating}" stars="5" style="display: inline-block" readonly="#{bookController.getReadOnly(b.id)}" valueChangeListener="#{bookController.setRating}" onclick="this.disabled=true;">
+                        <f:param name="id" value="#{b.id}"/>
+                        <p:ajax execute="rating" update=":bookform:booklist"/>
+                    </p:rating>
+                    <p:outputLabel id="count_voice" value="(#{b.countVoice})"/>
                 </p:column>
                 <p:column styleClass="col_2">
                     <div>
@@ -137,9 +169,10 @@
                             </h:outputLink>
                         </p>
                         <p class="action">
-                            <p:commandLink oncomplete="PF('edit_dlg').show();" title="#{mess.edit}" update=":edit_form:book_details" rendered="#{request.isUserInRole('admins')}">
+                            <p:commandLink oncomplete="PF('edit_dlg').show();" title="#{mess.edit}" update=":edit_form" rendered="#{request.isUserInRole('admins')}">
                                 <p:graphicImage library="images" name="edit.png" width="18" height="18"/>
                                 <f:setPropertyActionListener value="#{b}" target="#{bookController.selectedBook}"/>
+                                <f:setPropertyActionListener value="edit" target="#{bookController.bookFlag}"/>
                             </p:commandLink>
                         </p>
                         <p class="action">
@@ -153,8 +186,7 @@
                 <p:column styleClass="col_3">
                     <div class="book_desc">
                         <p><strong>#{mess.description}<br/></strong>
-                            <p:outputLabel value="#{b.descr}" rendered="#{!b.edit}"/>
-                            <p:inputTextarea value="#{b.descr}" rows="17" cols="55" rendered="#{b.edit}"/>
+                            <p:outputLabel value="#{b.descr}"/>
                         </p>
                     </div>
                 </p:column>

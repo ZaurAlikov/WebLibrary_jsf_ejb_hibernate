@@ -199,6 +199,9 @@ a:visited {
 .ui-paginator.ui-paginator-top{
     text-align: left;
 }
+.col_1 .ui-widget{
+    width: 25%;
+}
 .col_2{
     width: 25%;
 }
@@ -233,6 +236,24 @@ a:visited {
 .col_3 p{
     font-size: 12px;
     text-align: left;
+}
+.ed_col_pdf{
+    text-align: center;
+}
+.ed_col_save button{
+    margin-left: 20px;
+}
+.ed_col_save{
+    text-align: right;
+}
+.img_col .ui-messages-error, .img_col .ui-message-error{
+    width: 200px;
+    margin: 0 0 0 0;
+}
+.error-div{
+    height: 100px;
+    padding: 50px;
+    text-align: center;
 }
 a.book_name{
     font-weight: bold;

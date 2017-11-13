@@ -3,13 +3,16 @@ package ru.alikovzaur.library.servlets;
 import ru.alikovzaur.library.controllers.BookController;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @WebServlet(name = "ShowImage", urlPatterns = "/ShowImage")
 public class ShowImage extends HttpServlet {
@@ -23,8 +26,10 @@ public class ShowImage extends HttpServlet {
         try (OutputStream out = resp.getOutputStream()) {
             int id = Integer.valueOf(req.getParameter("id"));
             byte[] image = bookController.getImage(id);
-            resp.setContentLength(image.length);
-            out.write(image);
+            if (image != null){
+                resp.setContentLength(image.length);
+                out.write(image);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

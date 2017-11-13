@@ -20,22 +20,19 @@ public class ShowPDF extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/pdf");
-        OutputStream out = resp.getOutputStream();
-        try{
+        try (OutputStream out = resp.getOutputStream()) {
             String action = req.getParameter("action");
             long id = Long.valueOf(req.getParameter("id"));
             byte[] pdf = bookController.getPdf(id);
-            if(action.equals("read")){
+            if (action.equals("read")) {
                 resp.setContentLength(pdf.length);
-            } else if(action.equals("download")){
-                String name = URLEncoder.encode(req.getParameter("name"), "UTF-8").replace("+"," ");
+            } else if (action.equals("download")) {
+                String name = URLEncoder.encode(req.getParameter("name"), "UTF-8").replace("+", " ");
                 resp.setHeader("Content-Disposition", "attachment;filename=" + name + ".pdf");
             }
             out.write(pdf);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
-            out.close();
         }
     }
 
