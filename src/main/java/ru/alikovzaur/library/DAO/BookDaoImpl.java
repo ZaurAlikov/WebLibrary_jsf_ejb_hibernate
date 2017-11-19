@@ -126,6 +126,7 @@ public class BookDaoImpl implements BookDAO, Serializable {
 
     @Override
     public void delBook(BookEntity book) {
+        entityManager.createQuery("delete from RatingEntity r where r.bookId = :id").setParameter("id", book.getId()).executeUpdate();
         entityManager.remove(entityManager.merge(book));
     }
 
@@ -153,5 +154,13 @@ public class BookDaoImpl implements BookDAO, Serializable {
     @Override
     public void setBookRating(RatingEntity ratingEntity) {
         entityManager.persist(ratingEntity);
+        double rating = (Double) entityManager.createQuery("select avg(r.rating) from RatingEntity r where r.bookId = :id").setParameter("id", ratingEntity.getBookId()).getSingleResult();
+        long countVoices = (Long) entityManager.createQuery("select count(r) from RatingEntity r where r.bookId = :id").setParameter("id", ratingEntity.getBookId()).getSingleResult();
+        Query query = entityManager.createQuery("update BookEntity b set b.rating = :r, b.countVoice = :c where b.id = :id");
+        query.setParameter("id", ratingEntity.getBookId());
+        query.setParameter("r",  Integer.valueOf(String.valueOf(Math.round(rating))));
+        query.setParameter("c", Integer.valueOf(String.valueOf(countVoices)));
+        query.executeUpdate();
+
     }
 }

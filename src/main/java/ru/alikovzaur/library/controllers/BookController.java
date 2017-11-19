@@ -1,5 +1,6 @@
 package ru.alikovzaur.library.controllers;
 
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import ru.alikovzaur.library.entityes.*;
 import ru.alikovzaur.library.interfaces.BookDAO;
@@ -7,6 +8,7 @@ import ru.alikovzaur.library.interfaces.BookDAO;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.inject.Named;
@@ -34,6 +36,7 @@ public class BookController implements Serializable {
     private boolean contentIsEdited;
     private boolean imageIsEdited;
     private String bookFlag;
+    private ResourceBundle bundle;
 
     @EJB
     private BookDAO bookDao;
@@ -52,6 +55,7 @@ public class BookController implements Serializable {
         this.fillBooks();
         this.contentIsEdited = false;
         this.imageIsEdited = false;
+        this.bundle = ResourceBundle.getBundle("nls/message", FacesContext.getCurrentInstance().getViewRoot().getLocale());
     }
 
     public String getSearchType() {
@@ -214,6 +218,11 @@ public class BookController implements Serializable {
     }
 
     public void saveBook(){
+
+        if(!isValidate()){
+            return;
+        }
+
         if(bookFlag.equals("edit")){
             bookDao.updateBook(selectedBook, contentIsEdited, imageIsEdited);
             contentIsEdited = false;
@@ -222,6 +231,7 @@ public class BookController implements Serializable {
         if(bookFlag.equals("add")){
             bookDao.addBook(selectedBook);
         }
+        RequestContext.getCurrentInstance().execute("PF('edit_dlg').hide();");
         fillBooks(selectedPage);
     }
 
@@ -273,5 +283,39 @@ public class BookController implements Serializable {
             selectedBook.setContent(event.getFile().getContents());
             contentIsEdited = true;
         }
+    }
+
+    private boolean isValidate(){
+        if(isNullOrEmpty(selectedBook.getName())
+                || isNullOrEmpty(selectedBook.getAuthor())
+                || isNullOrEmpty(selectedBook.getGenre())
+                || isNullOrEmpty(selectedBook.getPageCount())
+                || isNullOrEmpty(selectedBook.getPublisher())
+                || isNullOrEmpty(selectedBook.getPublishYear())
+                || isNullOrEmpty(selectedBook.getIsbn())
+                || isNullOrEmpty(selectedBook.getDescr())){
+            failValidation(bundle.getString("error_empty_fields"));
+            return false;
+        }
+        if(bookFlag.equals("add")){
+            if(isNullOrEmpty(selectedBook.getContent())){
+                failValidation(bundle.getString("error_load_pdf"));
+                return false;
+            }
+            if(isNullOrEmpty(selectedBook.getImage())){
+                failValidation(bundle.getString("error_load_img"));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isNullOrEmpty(Object obj){
+        return obj == null || obj.toString().equals("") || obj.equals(0);
+    }
+
+    private void failValidation(String mess){
+        FacesContext.getCurrentInstance().validationFailed();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, mess, bundle.getString("error_empty_fields")));
     }
 }

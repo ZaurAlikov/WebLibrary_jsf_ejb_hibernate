@@ -1,22 +1,6 @@
 package ru.alikovzaur.library.entityes;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Type;
-import ru.alikovzaur.library.controllers.UsersController;
-import ru.alikovzaur.library.interfaces.BookDAO;
-
-import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.persistence.*;
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 
 @Entity
 @Table(name = "book", schema = "library")
@@ -32,21 +16,19 @@ public class BookEntity {
     private AuthorEntity author;
     private GenreEntity genre;
     private PublisherEntity publisher;
-    private List<RatingEntity> ratingEntities;
     private int rating;
     private int countVoice;
-//    private boolean readOnly;
 
-    @PostLoad
-    private void calcRating(){
-        List<RatingEntity> ratingEntities1 = ratingEntities.stream().filter(x -> x.getRating() > 0).collect(Collectors.toList());
-        countVoice = ratingEntities1.size();
-        rating = (int) Math.round(ratingEntities1.stream().mapToInt(RatingEntity::getRating).average().orElse(0));
-//        HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-//        FacesContext facesContext = FacesContext.getCurrentInstance();
-//        String username = facesContext.getExternalContext().getUserPrincipal().getName();
-//        readOnly = ratingEntities.stream().anyMatch(r -> r.getUsername().equals(username));
-    }
+//    @PostLoad
+//    private void calcRating(){
+//        List<RatingEntity> ratingEntities1 = ratingEntities.stream().filter(x -> x.getRating() > 0).collect(Collectors.toList());
+//        countVoice = ratingEntities1.size();
+//        rating = (int) Math.round(ratingEntities1.stream().mapToInt(RatingEntity::getRating).average().orElse(0));
+////        HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+////        FacesContext facesContext = FacesContext.getCurrentInstance();
+////        String username = facesContext.getExternalContext().getUserPrincipal().getName();
+////        readOnly = ratingEntities.stream().anyMatch(r -> r.getUsername().equals(username));
+//    }
 
     @Id
     @Column(name = "id", nullable = false)
@@ -160,17 +142,8 @@ public class BookEntity {
         this.publisher = publisher;
     }
 
-    @OneToMany
-    @JoinColumn(name = "book_id")
-    public List<RatingEntity> getRatingEntities() {
-        return ratingEntities;
-    }
-
-    public void setRatingEntities(List<RatingEntity> ratingEntities) {
-        this.ratingEntities = ratingEntities;
-    }
-
-    @Transient
+    @Basic
+    @Column(name = "rating", nullable = false)
     public int getRating() {
         return rating;
     }
@@ -179,7 +152,8 @@ public class BookEntity {
         this.rating = rating;
     }
 
-    @Transient
+    @Basic
+    @Column(name = "count_voice", nullable = false)
     public int getCountVoice() {
         return countVoice;
     }
@@ -187,13 +161,4 @@ public class BookEntity {
     public void setCountVoice(int countVoice) {
         this.countVoice = countVoice;
     }
-
-//    @Transient
-//    public boolean isReadOnly() {
-//        return readOnly;
-//    }
-//
-//    public void setReadOnly(boolean readOnly) {
-//        this.readOnly = readOnly;
-//    }
 }
